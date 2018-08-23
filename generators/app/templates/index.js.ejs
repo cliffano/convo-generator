@@ -1,0 +1,49 @@
+'use strict';
+
+const convo = require('convo-node');
+const <%= config.id() %>Api = require('<%= config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.api %>');
+<%
+  const apis = config.apis();
+  const apiKeys = Object.keys(apis);
+  for (var i = 0, len = apiKeys.length; i < len; i++) {
+%>
+const <%= apiKeys[i]  %> = new <%= config.id() %>Api.<%= apis[apiKeys[i]] %>();
+<%= apiKeys[i]  %>.apiClient.basePath = '<%= config.convoSpec.middlewares.openapi3_cloudfunctions.cloudfunctions.url %>';
+<%
+  }
+%>
+
+exports.dialogflow = (request, response) => {
+
+  function apiCallback(reply, done) {
+    // The callback signature with error, data, and response is defined in OpenAPI Generator.
+    return function(error, data, _response) {
+      console.log('Sending reply: ' + reply);
+      const replyPayload = convo.dialogFlow.payload.createReplyPayload(reply);
+      done(null, replyPayload);
+    }
+  }
+
+  function httpCallback(done) {
+    const message = convo.dialogFlow.payload.getMessageFromPayload(request.body);
+    <%
+      const conversations = config.conversations();
+      for (var i = 0, len = conversations.length; i < len; i++) {
+    %>
+    <% if (i > 0) { %>else<% } %> if (["<%= conversations[i].messages.join('", "') %>"].includes(message)) {
+      console.log('Receiving message: ' + message);
+      var args = [];
+      args.push(apiCallback('<%= conversations[i].reply %>', done));
+      <%= conversations[i].api %>.<%= conversations[i].method %>(...args);
+    }
+    <%
+      }
+    %>
+    else {
+      const replyPayload = convo.dialogFlow.payload.createReplyPayload('Unsupported message: ' + message);
+      done(null, replyPayload);
+    }
+  }
+
+  convo.dialogFlow.http.handle(request, response, httpCallback);
+};

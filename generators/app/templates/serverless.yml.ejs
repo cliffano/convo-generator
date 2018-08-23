@@ -1,0 +1,23 @@
+service: <%= config.id() %>
+
+provider:
+  name: google
+  runtime: nodejs
+  project: <%= config.convoSpec.middlewares.openapi3_cloudfunctions.cloudfunctions.project_id %>
+  credentials: ~/.gcloud/keyfile.json # path needs to be absolute
+
+plugins:
+  - serverless-google-cloudfunctions
+
+package:
+  exclude:
+    # Comment out node_modules when you want to use a local convo-node
+    # - node_modules/**
+    - .gitignore
+    - .git/**
+
+functions:
+  dialogFlow:
+    handler: dialogflow
+    events:
+      - http: blah
