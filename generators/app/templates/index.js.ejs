@@ -19,18 +19,17 @@ exports.dialogflow = (request, response) => {
     // The callback signature with error, data, and response is defined by OpenAPI Generator.
     return function(error, data, _response) {
       console.log('Sending reply: ' + reply);
-      const replyPayload = convo.dialogFlow.payload.createReplyPayload(reply);
+      const replyPayload = convo.dialogFlow2.payload.createReplyPayload(reply);
       done(null, replyPayload);
     }
   }
 
   function httpCallback(done) {
-    const conversationName = convo.dialogFlow.payload.getConversationNameFromPayload(request.body);
-    const conversationLanguage = convo.dialogFlow.payload.getConversationLanguageFromPayload(request.body);
+    const conversationName = convo.dialogFlow2.payload.getConversationNameFromPayload(request.body);
+    const conversationLanguage = convo.dialogFlow2.payload.getConversationLanguageFromPayload(request.body);
     console.log('Receiving conversation: %s, using language: %s', conversationName, conversationLanguage);
     <%
       const conversations = config.conversations();
-      console.log(conversations);
       for (var i = 0, iLen = conversations.length; i < iLen; i++) {
     %>
     <% if (i > 0) { %>else<% } %> if (conversationName === '<%= conversations[i].name %>') {
@@ -47,7 +46,7 @@ exports.dialogflow = (request, response) => {
         }
       %>
       else {
-        const replyPayload = convo.dialogFlow.payload.createReplyPayload('Unsupported reply language: ' + conversationLanguage);
+        const replyPayload = convo.dialogFlow2.payload.createReplyPayload('Unsupported reply language: ' + conversationLanguage);
         done(null, replyPayload);
       }
     }
@@ -55,10 +54,10 @@ exports.dialogflow = (request, response) => {
       }
     %>
     else {
-      const replyPayload = convo.dialogFlow.payload.createReplyPayload('Unsupported conversation: ' + conversationName);
+      const replyPayload = convo.dialogFlow2.payload.createReplyPayload('Unsupported conversation: ' + conversationName);
       done(null, replyPayload);
     }
   }
 
-  convo.dialogFlow.http.handle(request, response, httpCallback);
+  convo.dialogFlow2.http.handle(request, response, httpCallback);
 };
