@@ -3,13 +3,34 @@
 const convo = require('convo-node');
 const <%= config.id() %>Api = require('<%= config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.api %>');
 <%
+  //////////////////////////////////////////////////////////////////////////
+  // Declare all APIs defined in OpenAPI3 spec, i.e. the tags and a default API (if any)
+  //////////////////////////////////////////////////////////////////////////
   const apis = config.apis();
   const apiKeys = Object.keys(apis);
   for (var i = 0, len = apiKeys.length; i < len; i++) {
 %>
 const <%= apiKeys[i]  %> = new <%= config.id() %>Api.<%= apis[apiKeys[i]] %>();
-<%= apiKeys[i]  %>.apiClient.basePath = '<%= config.convoSpec.middlewares.openapi3_cloudfunctions.cloudfunctions.url %>';
+
+<%= apiKeys[i]  %>.apiClient.basePath = '<%= config.convoSpec.middlewares.openapi3_cloudfunctions.cloudfunctions.target_url %>';
 <%
+  }
+%>
+
+const <%= config.id() %>Instance = <%= config.id() %>Api.ApiClient.instance;
+<%
+  //////////////////////////////////////////////////////////////////////////
+  // Set username and password to basic HTTP auths
+  //////////////////////////////////////////////////////////////////////////
+  if (config.hasBasicHttpAuths()) {
+    const basicHttpAuths = config.basicHttpAuths();
+    for (var i = 0, len = basicHttpAuths.length; i < len; i++) {
+%>
+var <%= config.id() %>Auth = <%= config.id() %>Instance.authentications['<%= basicHttpAuths[i] %>'];
+<%= config.id() %>Auth.username = '<%= config.convoSpec.middlewares.openapi3_cloudfunctions.cloudfunctions.target_username %>';
+<%= config.id() %>Auth.password = '<%= config.convoSpec.middlewares.openapi3_cloudfunctions.cloudfunctions.target_password %>';
+<%
+    }
   }
 %>
 
@@ -29,6 +50,9 @@ exports.dialogflow = (request, response) => {
     const conversationLanguage = convo.dialogFlow2.payload.getConversationLanguageFromPayload(request.body);
     console.log('Receiving conversation: %s, using language: %s', conversationName, conversationLanguage);
     <%
+      //////////////////////////////////////////////////////////////////////////
+      // Match input to the conversations defined in Convo spec
+      //////////////////////////////////////////////////////////////////////////
       const conversations = config.conversations();
       for (var i = 0, iLen = conversations.length; i < iLen; i++) {
     %>
