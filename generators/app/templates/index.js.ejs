@@ -1,27 +1,31 @@
 'use strict';
 
 const convo = require('convo-node');
-const <%= config.id() %>Api = require('<%= config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.api %>');
+const <%= config.id() %>Client = require('<%= config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.api %>');
+<% if (config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.helper) { %>
+const <%= config.id() %>Helper = require('<%= config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.helper %>');
+<% } %>
+var apis = {};
 <%
-  //////////////////////////////////////////////////////////////////////////
-  // Declare all APIs defined in OpenAPI3 spec, i.e. the tags and a default API (if any)
-  //////////////////////////////////////////////////////////////////////////
+  /******************************************************************
+   * Declare all APIs defined in OpenAPI3 spec, i.e. the tags and a default API (if any)
+   ******************************************************************/
   const apis = config.apis();
   const apiKeys = Object.keys(apis);
   for (var i = 0, len = apiKeys.length; i < len; i++) {
 %>
-const <%= apiKeys[i]  %> = new <%= config.id() %>Api.<%= apis[apiKeys[i]] %>();
-
+const <%= apiKeys[i] %> = new <%= config.id() %>Client.<%= apis[apiKeys[i]] %>();
 <%= apiKeys[i]  %>.apiClient.basePath = '<%= config.convoSpec.middlewares.openapi3_cloudfunctions.cloudfunctions.target_url %>';
+apis.<%= apiKeys[i] %> = <%= apiKeys[i] %>;
 <%
   }
 %>
 
-const <%= config.id() %>Instance = <%= config.id() %>Api.ApiClient.instance;
+const <%= config.id() %>Instance = <%= config.id() %>Client.ApiClient.instance;
 <%
-  //////////////////////////////////////////////////////////////////////////
-  // Set username and password to basic HTTP auths
-  //////////////////////////////////////////////////////////////////////////
+  /******************************************************************
+   * Set username and password to basic HTTP auths
+   ******************************************************************/
   if (config.hasBasicHttpAuths()) {
     const basicHttpAuths = config.basicHttpAuths();
     for (var i = 0, len = basicHttpAuths.length; i < len; i++) {
@@ -42,17 +46,22 @@ exports.dialogflow = (request, response) => {
       console.log('Sending reply: ' + reply);
       const replyPayload = convo.dialogFlow2.payload.createReplyPayload(reply);
       done(null, replyPayload);
-    }
+    };
   }
 
   function httpCallback(done) {
     const conversationName = convo.dialogFlow2.payload.getConversationNameFromPayload(request.body);
     const conversationLanguage = convo.dialogFlow2.payload.getConversationLanguageFromPayload(request.body);
     console.log('Receiving conversation: %s, using language: %s', conversationName, conversationLanguage);
+
+    var args = [];
+    var opts = {
+      apis: apis
+    };
     <%
-      //////////////////////////////////////////////////////////////////////////
-      // Match input to the conversations defined in Convo spec
-      //////////////////////////////////////////////////////////////////////////
+      /******************************************************************
+       * Match input to the conversations defined in Convo spec
+       ******************************************************************/
       const conversations = config.conversations();
       for (var i = 0, iLen = conversations.length; i < iLen; i++) {
     %>
@@ -62,9 +71,20 @@ exports.dialogflow = (request, response) => {
         for (var j = 0, jLen = languages.length; j < jLen; j++) {
       %>
       <% if (j > 0) { %>else<% } %> if (conversationLanguage === '<%= languages[j] %>') {
-        var args = [];
-        args.push(apiCallback('<%= conversations[i].reply[languages[j]] %>', done));
-        <%= conversations[i].api %>.<%= conversations[i].method %>(...args);
+        var _apiCallback = apiCallback('<%= conversations[i].reply[languages[j]] %>', done);
+        <% if (config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.helper) { %>
+          if (<%= config.id() %>Helper.callTarget) {
+            var params = {};
+            <%= config.id() %>Helper.foobar();
+            <%= config.id() %>Helper.callTarget(<%= conversations[i].api %>, '<%= conversations[i].method %>', params, _apiCallback, opts);
+          } else {
+            args.push(_apiCallback);
+            <%= conversations[i].api %>.<%= conversations[i].method %>(...args);
+          }
+        <% } else { %>
+          args.push(_apiCallback);
+          <%= conversations[i].api %>.<%= conversations[i].method %>(...args);
+        <% } %>
       }
       <%
         }
