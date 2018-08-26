@@ -1,4 +1,4 @@
-ci: clean deps lint
+ci: clean deps lint install
 
 clean:
 	rm -rf stage
@@ -9,15 +9,7 @@ deps:
 lint:
 	npm run-script lint
 
-test:
+install:
 	npm link
-	mkdir -p stage
-	cd stage && ../node_modules/yo/lib/cli.js convo-openapi3-cloudfunctions-middleware ../../convo/examples/jenkins.yaml ../../swaggy-jenkins/spec/jenkins-api.yml
 
-deploy:
-	cd stage && npm link convo-node && npm link convo-jenkins-helper && npm install . && ../node_modules/serverless/bin/serverless deploy
-
-destroy:
-	cd stage && ../node_modules/serverless/bin/serverless remove
-
-.PHONY: ci clean deps lint test deploy destroy
+.PHONY: ci clean deps lint install
