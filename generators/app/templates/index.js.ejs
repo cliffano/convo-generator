@@ -1,22 +1,35 @@
+<%
+/******************************************************************
+ * This template uses JavaScript (Yeoman Generator) to generate JavaScript (Serverless CloudFunctions).
+ * To slightly improve readability, all variables for generator code which are declared in this template is prefixed with double underscores.
+ ******************************************************************/
+%>
 'use strict';
 
 const convo = require('convo-node');
 const <%= config.id() %>Client = require('<%= config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.api %>');
-<% if (config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.helper) { %>
+
+<%
+  /******************************************************************
+   * Declare Convo Helper if one is supplied in Convo specification.
+   ******************************************************************/
+  if (config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.helper) {
+%>
 const <%= config.id() %>Helper = require('<%= config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.helper %>');
 <% } %>
+
 var apis = {};
 <%
   /******************************************************************
-   * Declare all APIs defined in OpenAPI3 spec, i.e. the tags and a default API (if any)
+   * Declare all APIs defined in OpenAPI3 spec and set their base path.
    ******************************************************************/
-  const apis = config.apis();
-  const apiKeys = Object.keys(apis);
-  for (var i = 0, len = apiKeys.length; i < len; i++) {
+  const __apis = config.apis();
+  const __apiKeys = Object.keys(__apis);
+  for (var i = 0, len = __apiKeys.length; i < len; i++) {
 %>
-const <%= apiKeys[i] %> = new <%= config.id() %>Client.<%= apis[apiKeys[i]] %>();
-<%= apiKeys[i]  %>.apiClient.basePath = '<%= config.convoSpec.middlewares.openapi3_cloudfunctions.cloudfunctions.target_url %>';
-apis.<%= apiKeys[i] %> = <%= apiKeys[i] %>;
+const <%= __apiKeys[i] %> = new <%= config.id() %>Client.<%= __apis[__apiKeys[i]] %>();
+<%= __apiKeys[i]  %>.apiClient.basePath = '<%= config.convoSpec.middlewares.openapi3_cloudfunctions.cloudfunctions.target_url %>';
+apis.<%= __apiKeys[i] %> = <%= __apiKeys[i] %>;
 <%
   }
 %>
@@ -24,13 +37,13 @@ apis.<%= apiKeys[i] %> = <%= apiKeys[i] %>;
 const <%= config.id() %>Instance = <%= config.id() %>Client.ApiClient.instance;
 <%
   /******************************************************************
-   * Set username and password to basic HTTP auths
+   * Set basic HTTP auths username and password for the API client.
    ******************************************************************/
   if (config.hasBasicHttpAuths()) {
-    const basicHttpAuths = config.basicHttpAuths();
-    for (var i = 0, len = basicHttpAuths.length; i < len; i++) {
+    const __basicHttpAuths = config.basicHttpAuths();
+    for (var i = 0, len = __basicHttpAuths.length; i < len; i++) {
 %>
-var <%= config.id() %>Auth = <%= config.id() %>Instance.authentications['<%= basicHttpAuths[i] %>'];
+var <%= config.id() %>Auth = <%= config.id() %>Instance.authentications['<%= __basicHttpAuths[i] %>'];
 <%= config.id() %>Auth.username = '<%= config.convoSpec.middlewares.openapi3_cloudfunctions.cloudfunctions.target_username %>';
 <%= config.id() %>Auth.password = '<%= config.convoSpec.middlewares.openapi3_cloudfunctions.cloudfunctions.target_password %>';
 <%
@@ -40,66 +53,88 @@ var <%= config.id() %>Auth = <%= config.id() %>Instance.authentications['<%= bas
 
 exports.dialogflow = (request, response) => {
 
-  function apiCallback(reply, done) {
-    // The callback signature with error, data, and response is defined by OpenAPI Generator.
-    return function(error, data, _response) {
-      console.log('Sending reply: ' + reply);
-      const replyPayload = convo.dialogFlow2.payload.createReplyPayload(reply);
+  // Create a callback for handling error.
+  function createErrorCallback(done) {
+    return function(replyText) {
+      console.error('Sending reply with error message: ' + replyText);
+      const replyPayload = convo.dialogFlow2.payload.createReplyPayload(replyText);
       done(null, replyPayload);
     };
   }
 
+  // Create a callback for handling API call result.
+  // The callback signature with error, data, and response is defined by OpenAPI Generator.
+  function createApiCallback(replyText, done) {
+    return function(error, data, _response) {
+      console.log(error);
+      console.log(data);
+      console.log('Sending reply with success message: ' + replyText);
+      const replyPayload = convo.dialogFlow2.payload.createReplyPayload(replyText);
+      done(null, replyPayload);
+    };
+  }
+
+  // Call API method using Convo Helper if the callTarget property is supplied,
+  // otherwise the API will be called directly without Convo Helper.
+  function callApi(api, method, replyText, done) {
+    var apiCallback = createApiCallback(replyText, done);
+    var errorCallback = createErrorCallback(done);
+    var args = [];
+    <% if (config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.helper) { %>
+      if (<%= config.id() %>Helper.callTarget) {
+        var params = {};
+        var opts = {
+          apis: apis
+        };
+        console.log('Using Convo Helper: <%= config.id() %>Helper');
+        console.log(<%= config.id() %>Helper.info());
+        <%= config.id() %>Helper.callTarget(api, method, params, apiCallback, errorCallback, opts);
+      } else {
+        args.push(apiCallback);
+        api[method](...args);
+      }
+    <% } else { %>
+      args.push(apiCallback);
+      api[method](...args);
+    <% } %>
+  }
+
+  // Callback for handling DialogFlow HTTP requests.
   function httpCallback(done) {
     const conversationName = convo.dialogFlow2.payload.getConversationNameFromPayload(request.body);
     const conversationLanguage = convo.dialogFlow2.payload.getConversationLanguageFromPayload(request.body);
     console.log('Receiving conversation: %s, using language: %s', conversationName, conversationLanguage);
 
-    var args = [];
-    var opts = {
-      apis: apis
-    };
+    switch (conversationName) {
     <%
       /******************************************************************
        * Match input to the conversations defined in Convo spec
        ******************************************************************/
-      const conversations = config.conversations();
-      for (var i = 0, iLen = conversations.length; i < iLen; i++) {
+      const __conversations = config.conversations();
+      for (var i = 0, iLen = __conversations.length; i < iLen; i++) {
     %>
-    <% if (i > 0) { %>else<% } %> if (conversationName === '<%= conversations[i].name %>') {
-      <%
-        const languages = Object.keys(conversations[i].reply);
-        for (var j = 0, jLen = languages.length; j < jLen; j++) {
-      %>
-      <% if (j > 0) { %>else<% } %> if (conversationLanguage === '<%= languages[j] %>') {
-        var _apiCallback = apiCallback('<%= conversations[i].reply[languages[j]] %>', done);
-        <% if (config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.helper) { %>
-          if (<%= config.id() %>Helper.callTarget) {
-            var params = {};
-            <%= config.id() %>Helper.foobar();
-            <%= config.id() %>Helper.callTarget(<%= conversations[i].api %>, '<%= conversations[i].method %>', params, _apiCallback, opts);
-          } else {
-            args.push(_apiCallback);
-            <%= conversations[i].api %>.<%= conversations[i].method %>(...args);
+      case '<%= __conversations[i].name %>':
+        switch (conversationLanguage) {
+        <%
+          const __languages = Object.keys(__conversations[i].reply);
+          for (var j = 0, jLen = __languages.length; j < jLen; j++) {
+        %>
+          case '<%= __languages[j] %>':
+            console.log('Calling API: %s, with method: %s', '<%= __conversations[i].api %>', '<%= __conversations[i].method %>');
+            callApi(<%= __conversations[i].api %>, '<%= __conversations[i].method %>', '<%= __conversations[i].reply[__languages[j]] %>', done);
+            break;
+        <%
           }
-        <% } else { %>
-          args.push(_apiCallback);
-          <%= conversations[i].api %>.<%= conversations[i].method %>(...args);
-        <% } %>
-      }
-      <%
+        %>
+          default:
+            createErrorCallback(done)('Unsupported reply language: ' + conversationLanguage);
         }
-      %>
-      else {
-        const replyPayload = convo.dialogFlow2.payload.createReplyPayload('Unsupported reply language: ' + conversationLanguage);
-        done(null, replyPayload);
-      }
-    }
+        break;
     <%
       }
     %>
-    else {
-      const replyPayload = convo.dialogFlow2.payload.createReplyPayload('Unsupported conversation: ' + conversationName);
-      done(null, replyPayload);
+      default:
+        createErrorCallback(done)('Unsupported conversation: ' + conversationName);
     }
   }
 
