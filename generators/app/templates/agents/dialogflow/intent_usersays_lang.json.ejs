@@ -1,0 +1,19 @@
+[
+  <%
+    for (var i = 0, len = conversation.messages[language].length; i < len; i++) {
+  %>
+  {
+    "data": [
+      {
+        "text": "<%= conversation.messages[language][i] %>",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "updated": 0
+  }<% if (i < len - 1) { %>,<% } %>
+  <%
+    }
+  %>
+]

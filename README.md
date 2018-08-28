@@ -10,6 +10,10 @@ Convo Generator is a Convo agents and middlewares generator using Yeoman.
 Usage
 -----
 
+Generate DialogFlow agent:
+
+  yo convo dialogflow-agent </path/to/convo-spec.yaml>
+
 Generate OpenAPI-CloudFunctions middleware:
 
   yo convo openapi-cloudfunctions-middleware </path/to/convo-spec.yaml> </path/to/openapi-spec.yaml>
