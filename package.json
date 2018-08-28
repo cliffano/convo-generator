@@ -1,18 +1,19 @@
 {
-  "name": "generator-convo-openapi3-cloudfunctions-middleware",
+  "name": "generator-convo",
   "version": "0.1.0",
-  "description": "Convo OpenAPI3-CloudFunctions Middleware generator using Yeoman",
+  "description": "Convo agents and middlewares generator using Yeoman",
   "files": [
     "generators"
   ],
   "keywords": [
     "yeoman-generator",
     "convo",
+    "dialogflow",
     "openapi",
     "cloudfunctions"
   ],
   "scripts": {
-    "lint": "node_modules/ejs-lint/cli.js generators/app/templates/*.ejs"
+    "lint": "node_modules/ejs-lint/cli.js generators/app/templates/*/*/*.ejs"
   },
   "dependencies": {
     "convo-node": "^0.0.2",

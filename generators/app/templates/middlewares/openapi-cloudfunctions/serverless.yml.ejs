@@ -3,7 +3,7 @@ service: <%= config.id() %>
 provider:
   name: google
   runtime: nodejs
-  project: <%= config.convoSpec.middlewares.openapi3_cloudfunctions.cloudfunctions.project_id %>
+  project: <%= config.convoSpec.middlewares.openapi_cloudfunctions.cloudfunctions.project_id %>
   credentials: ~/.gcloud/keyfile.json # path needs to be absolute
 
 plugins:

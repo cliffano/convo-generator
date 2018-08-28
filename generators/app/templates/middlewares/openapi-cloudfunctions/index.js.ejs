@@ -7,28 +7,28 @@
 'use strict';
 
 const convo = require('convo-node');
-const <%= config.id() %>Client = require('<%= config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.api %>');
+const <%= config.id() %>Client = require('<%= config.convoSpec.middlewares.openapi_cloudfunctions.openapi.node_modules.api %>');
 
 <%
   /******************************************************************
    * Declare Convo Helper if one is supplied in Convo specification.
    ******************************************************************/
-  if (config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.helper) {
+  if (config.convoSpec.middlewares.openapi_cloudfunctions.openapi.node_modules.helper) {
 %>
-const <%= config.id() %>Helper = require('<%= config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.helper %>');
+const <%= config.id() %>Helper = require('<%= config.convoSpec.middlewares.openapi_cloudfunctions.openapi.node_modules.helper %>');
 <% } %>
 
 var apis = {};
 <%
   /******************************************************************
-   * Declare all APIs defined in OpenAPI3 spec and set their base path.
+   * Declare all APIs defined in OpenAPI spec and set their base path.
    ******************************************************************/
   const __apis = config.apis();
   const __apiKeys = Object.keys(__apis);
   for (var i = 0, len = __apiKeys.length; i < len; i++) {
 %>
 const <%= __apiKeys[i] %> = new <%= config.id() %>Client.<%= __apis[__apiKeys[i]] %>();
-<%= __apiKeys[i]  %>.apiClient.basePath = '<%= config.convoSpec.middlewares.openapi3_cloudfunctions.cloudfunctions.target_url %>';
+<%= __apiKeys[i]  %>.apiClient.basePath = '<%= config.convoSpec.middlewares.openapi_cloudfunctions.cloudfunctions.target_url %>';
 apis.<%= __apiKeys[i] %> = <%= __apiKeys[i] %>;
 <%
   }
@@ -44,8 +44,8 @@ const <%= config.id() %>Instance = <%= config.id() %>Client.ApiClient.instance;
     for (var i = 0, len = __basicHttpAuths.length; i < len; i++) {
 %>
 var <%= config.id() %>Auth = <%= config.id() %>Instance.authentications['<%= __basicHttpAuths[i] %>'];
-<%= config.id() %>Auth.username = '<%= config.convoSpec.middlewares.openapi3_cloudfunctions.cloudfunctions.target_username %>';
-<%= config.id() %>Auth.password = '<%= config.convoSpec.middlewares.openapi3_cloudfunctions.cloudfunctions.target_password %>';
+<%= config.id() %>Auth.username = '<%= config.convoSpec.middlewares.openapi_cloudfunctions.cloudfunctions.target_username %>';
+<%= config.id() %>Auth.password = '<%= config.convoSpec.middlewares.openapi_cloudfunctions.cloudfunctions.target_password %>';
 <%
     }
   }
@@ -80,7 +80,7 @@ exports.dialogflow = (request, response) => {
     var apiCallback = createApiCallback(replyText, done);
     var errorCallback = createErrorCallback(done);
     var args = [];
-    <% if (config.convoSpec.middlewares.openapi3_cloudfunctions.openapi3.node_modules.helper) { %>
+    <% if (config.convoSpec.middlewares.openapi_cloudfunctions.openapi.node_modules.helper) { %>
       if (<%= config.id() %>Helper.callTarget) {
         var params = {};
         var opts = {

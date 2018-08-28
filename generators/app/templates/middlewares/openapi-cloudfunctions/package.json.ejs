@@ -7,7 +7,7 @@
   "license": "<%= config.convoSpec.info.license.name %>",
   "dependencies": {
     <%
-      const dependencies = config.convoSpec.middlewares.openapi3_cloudfunctions.dependencies;
+      const dependencies = config.convoSpec.middlewares.openapi_cloudfunctions.dependencies;
       for (var i = 0, len = dependencies.length; i < len; i++) {
     %>
     "<%= dependencies[i].name %>": "<%= dependencies[i].version %>",
