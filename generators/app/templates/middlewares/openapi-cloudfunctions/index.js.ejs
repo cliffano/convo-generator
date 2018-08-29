@@ -1,7 +1,7 @@
 <%
 /******************************************************************
- * This template uses JavaScript (Yeoman Generator) to generate JavaScript (Serverless CloudFunctions).
- * To slightly improve readability, all variables for generator code which are declared in this template is prefixed with double underscores.
+ * This template uses JavaScript (Yeoman Generator) to generate JavaScript (Serverless CloudFunctions) - yep, sorry!
+ * To slightly improve readability, all variables for generator code which are declared in this template are prefixed with double underscores.
  ******************************************************************/
 %>
 'use strict';
@@ -28,7 +28,7 @@ var apis = {};
   for (var i = 0, len = __apiKeys.length; i < len; i++) {
 %>
 const <%= __apiKeys[i] %> = new <%= config.id() %>Client.<%= __apis[__apiKeys[i]] %>();
-<%= __apiKeys[i]  %>.apiClient.basePath = '<%= config.convoSpec.middlewares.openapi_cloudfunctions.cloudfunctions.target_url %>';
+<%= __apiKeys[i]  %>.apiClient.basePath = '<%= config.env.openapi.username %>';
 apis.<%= __apiKeys[i] %> = <%= __apiKeys[i] %>;
 <%
   }
@@ -44,8 +44,8 @@ const <%= config.id() %>Instance = <%= config.id() %>Client.ApiClient.instance;
     for (var i = 0, len = __basicHttpAuths.length; i < len; i++) {
 %>
 var <%= config.id() %>Auth = <%= config.id() %>Instance.authentications['<%= __basicHttpAuths[i] %>'];
-<%= config.id() %>Auth.username = '<%= config.convoSpec.middlewares.openapi_cloudfunctions.cloudfunctions.target_username %>';
-<%= config.id() %>Auth.password = '<%= config.convoSpec.middlewares.openapi_cloudfunctions.cloudfunctions.target_password %>';
+<%= config.id() %>Auth.username = '<%= config.env.openapi.username %>';
+<%= config.id() %>Auth.password = '<%= config.env.openapi.password %>';
 <%
     }
   }

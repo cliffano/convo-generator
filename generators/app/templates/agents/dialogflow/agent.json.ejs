@@ -21,7 +21,7 @@
   },
   "defaultTimezone": "<%= config.convoSpec.info.timezone %>",
   "webhook": {
-    "url": "<%= config.convoSpec.agents.dialogflow.target_url %>",
+    "url": "<%= config.env.cloudfunctions.url %>",
     "headers": {
       "User-Agent": "convo-dialogflow-agent"
     },
