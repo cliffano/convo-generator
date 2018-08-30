@@ -2,6 +2,8 @@ service: <%= config.id() %>
 
 provider:
   name: google
+  # Switch to nodejs8 after Serverless 2.0.0 has been published.
+  # node 8 allows console.debug which is handy for logging payloads.
   runtime: nodejs
   project: <%= config.convoSpec.middlewares.openapi_cloudfunctions.cloudfunctions.project_id %>
   credentials: ~/.gcloud/keyfile.json # path needs to be absolute
@@ -11,7 +13,7 @@ plugins:
 
 package:
   exclude:
-    # Comment out node_modules when you want to use a local convo-node
+    # Comment out node_modules when you want to use a local convo-node.
     # - node_modules/**
     - .gitignore
     - .git/**
