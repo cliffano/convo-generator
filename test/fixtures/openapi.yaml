@@ -1,0 +1,58 @@
+---
+openapi: 3.0.0
+info:
+  version: 0.0.1
+  title: Some Service
+  description: Some service
+  license:
+    name: MIT
+  contact:
+    name: Cliffano Subagio
+    url: http://blog.cliffano.com
+    email: blah@cliffano.com
+paths:
+  /data1:
+    get:
+      summary: Get your data 1
+      operationId: getData1
+      parameters:
+        - name: someparam
+          in: query
+          description: Some parameter
+          required: false
+          schema:
+            type: string
+            enum: [somevalue1, somevalue2]
+      responses:
+        '200':
+          description: Your data 1
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/SomeData"
+                  - type: string
+  /data2:
+    post:
+      summary: Post your data 2
+      operationId: postData2
+      responses:
+        '200':
+          description: Finish posting your data 1
+      tags:
+        - someTag
+components:
+  securitySchemes:
+    some_http_basic_auth1:
+      type: http
+      scheme: basic
+    some_http_basic_auth2:
+      type: http
+      scheme: basic
+  schemas:
+    SomeData:
+      required:
+        - someproperty
+      properties:
+        someproperty:
+          type: string

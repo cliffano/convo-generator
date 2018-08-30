@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "lint": "node_modules/ejs-lint/cli.js generators/app/templates/*/*/*.ejs",
-    "test": "node_modules/mocha/bin/mocha --timeout 5000 test/integration/*/*/*.js",
+    "test": "node_modules/mocha/bin/mocha --timeout 5000 test/*/*/*.js",
     "coverage": "node_modules/mocha/bin/mocha --require mocha-lcov-reporter --reporter mocha-lcov-reporter --timeout 5000 test/integration/*/*/*.js",
     "publish-coverage": "cat stage/coverage.lcov | node_modules/coveralls/bin/coveralls.js"
   },

@@ -1,0 +1,50 @@
+---
+info:
+  version: 0.0.1
+  title: Some Service
+  description: Convo specification for Some Service
+  license:
+    name: MIT
+  contact:
+    name: Cliffano Subagio
+    url: http://blog.cliffano.com
+    email: blah@cliffano.com
+conversations:
+  - name: Retrieving data
+    messages:
+      en:
+        - Get me my data
+        - I want my data now
+        - Retrieve my data
+      de:
+        - Hol mir meine Daten
+    reply:
+      en: Here is your data... {data}
+      de: Hier sind Ihre Daten ... {data}
+    openapi_cloudfunctions:
+      operation_id: getData1
+  - name: Submitting data
+    messages:
+      en:
+        - Here's my data
+        - Sending my data
+      de:
+        - Senden meiner Daten
+    reply:
+      en: Finished sending your data
+      de: Fertig Senden Ihrer Daten
+    openapi_cloudfunctions:
+      operation_id: postData2
+middlewares:
+  openapi_cloudfunctions:
+    openapi:
+      node_modules:
+        api: some-service
+        helper: convo-someservice-helper
+    cloudfunctions:
+      project_id: convo-jenkins
+    dependencies:
+      - name: some-service
+        version: 0.0.1
+agents:
+  dialogflow:
