@@ -28,7 +28,7 @@ var apis = {};
   for (var i = 0, len = __apiKeys.length; i < len; i++) {
 %>
 const <%= __apiKeys[i] %> = new <%= config.id() %>Client.<%= __apis[__apiKeys[i]] %>();
-<%= __apiKeys[i]  %>.apiClient.basePath = '<%= config.env.openapi.username %>';
+<%= __apiKeys[i]  %>.apiClient.basePath = '<%= config.env.openapi.url %>';
 apis.<%= __apiKeys[i] %> = <%= __apiKeys[i] %>;
 <%
   }
@@ -54,10 +54,11 @@ var <%= config.id() %>Auth = <%= config.id() %>Instance.authentications['<%= __b
 exports.dialogflow = (request, response) => {
 
   // Create a callback for handling error.
+  // This callback logs an error message and then responds with a reply payload containing the error message.
   function createErrorCallback(done) {
     return function(replyText) {
       console.error('Sending reply with error message: ' + replyText);
-      const replyPayload = convo.dialogFlow2.payload.createReplyPayload(replyText);
+      const replyPayload = convo.dialogFlow.payload.createReply(replyText);
       done(null, replyPayload);
     };
   }
@@ -65,50 +66,56 @@ exports.dialogflow = (request, response) => {
   // Create a callback for handling API call result.
   // The callback signature with error, data, and response is defined by OpenAPI Generator.
   function createApiCallback(replyText, done) {
-    return function(error, data, _response) {
-      console.log(error);
-      console.log(data);
-      console.log('Sending reply with success message: ' + replyText);
-      const replyPayload = convo.dialogFlow2.payload.createReplyPayload(replyText);
+    return function(err, data, _response) {
+      console.info('Sending reply with success message: ' + replyText);
+      const replyPayload = convo.dialogFlow.payload.createReply(replyText);
       done(null, replyPayload);
     };
   }
 
-  // Call API method using Convo Helper if the callTarget property is supplied,
-  // otherwise the API will be called directly without Convo Helper.
-  function callApi(api, method, replyText, done) {
-    var apiCallback = createApiCallback(replyText, done);
-    var errorCallback = createErrorCallback(done);
+  // Call API method using a Convo Helper if it has a callApi function,
+  // otherwise the API will be called directly without Convo Helper by mapping
+  // the conversation to the operation ID.
+  function callApi(api, method, params, replyText, opts, done) {
+    const apiCb = createApiCallback(replyText, done);
     var args = [];
     <% if (config.convoSpec.middlewares.openapi_cloudfunctions.openapi.node_modules.helper) { %>
-      if (<%= config.id() %>Helper.callTarget) {
-        var params = {};
-        var opts = {
-          apis: apis
-        };
-        console.log('Using Convo Helper: <%= config.id() %>Helper');
-        console.log(<%= config.id() %>Helper.info());
-        <%= config.id() %>Helper.callTarget(api, method, params, apiCallback, errorCallback, opts);
+      if (<%= config.id() %>Helper.callApi) {
+        var errorCb = createErrorCallback(done);
+        console.info('Using Convo Helper: %s', <%= config.id() %>Helper.getInfo());
+        <%= config.id() %>Helper.callApi(api, method, params, apiCb, errorCb, opts);
       } else {
-        args.push(apiCallback);
+        args.push(apiCb);
         api[method](...args);
       }
     <% } else { %>
-      args.push(apiCallback);
+      args.push(apiCb);
       api[method](...args);
     <% } %>
   }
 
-  // Callback for handling DialogFlow HTTP requests.
+  // Callback for handling DialogFlow HTTP request.
+  // It receives the payload from DialogFlow, the payload details will then be matched to the conversations
+  // defined in Convo specification. An API call will then be made to the OpenAPI service, which response
+  // will then be used to construct the reply back to DialogFlow.
   function httpCallback(done) {
-    const conversationName = convo.dialogFlow2.payload.getConversationNameFromPayload(request.body);
-    const conversationLanguage = convo.dialogFlow2.payload.getConversationLanguageFromPayload(request.body);
-    console.log('Receiving conversation: %s, using language: %s', conversationName, conversationLanguage);
+    const conversationName = convo.dialogFlow.payload.getConversationName(request.body);
+    const conversationLanguage = convo.dialogFlow.payload.getConversationLanguage(request.body);
+    const conversationParams = convo.dialogFlow.payload.getConversationParams(request.body);
+    console.info('Receiving conversation: %s, using language: %s', conversationName, conversationLanguage);
+    console.log('DialogFlow payload: %s', request.body);
+
+    var convoOpts = {
+      apis: apis,
+      conversationName: conversationName,
+      conversationLanguage: conversationLanguage
+    };
 
     switch (conversationName) {
     <%
       /******************************************************************
-       * Match input to the conversations defined in Convo spec
+       * Match payload to the conversations defined in Convo specification
+       * based on conversation name and language.
        ******************************************************************/
       const __conversations = config.conversations();
       for (var i = 0, iLen = __conversations.length; i < iLen; i++) {
@@ -120,8 +127,8 @@ exports.dialogflow = (request, response) => {
           for (var j = 0, jLen = __languages.length; j < jLen; j++) {
         %>
           case '<%= __languages[j] %>':
-            console.log('Calling API: %s, with method: %s', '<%= __conversations[i].api %>', '<%= __conversations[i].method %>');
-            callApi(<%= __conversations[i].api %>, '<%= __conversations[i].method %>', '<%= __conversations[i].reply[__languages[j]] %>', done);
+            console.info('Calling API: %s, with method: %s', '<%= __conversations[i].api %>', '<%= __conversations[i].method %>');
+            callApi(<%= __conversations[i].api %>, '<%= __conversations[i].method %>', conversationParams, '<%= __conversations[i].reply[__languages[j]] %>', convoOpts, done);
             break;
         <%
           }
@@ -138,5 +145,5 @@ exports.dialogflow = (request, response) => {
     }
   }
 
-  convo.dialogFlow2.http.handle(request, response, httpCallback);
+  convo.dialogFlow.http.handleRequest(request, response, httpCallback);
 };
