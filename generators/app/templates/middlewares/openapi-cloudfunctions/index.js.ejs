@@ -67,9 +67,13 @@ exports.dialogflow = (request, response) => {
   // The callback signature with error, data, and response is defined by OpenAPI Generator.
   function createApiCallback(replyText, done) {
     return function(err, data, _response) {
-      console.info('Sending reply with success message: ' + replyText);
-      const replyPayload = convo.dialogFlow.payload.createReply(replyText);
-      done(null, replyPayload);
+      if (err) {
+        createErrorCallback(done)(err.message);
+      } else {
+        console.info('Sending reply with success message: ' + replyText);
+        const replyPayload = convo.dialogFlow.payload.createReply(replyText);
+        done(null, replyPayload);
+      }
     };
   }
 
