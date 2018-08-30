@@ -27,9 +27,9 @@ describe('OpenAPI-CloudFunctions Middleware Config', function() {
       assert.equal(conversations[1].name, 'Submitting data');
       assert.equal(conversations[1].api, 'someTagApi');
       assert.equal(conversations[1].method, 'postData2');
-      assert.equal(conversations[1].reply.en, 'Finished sending your data');
+      assert.equal(conversations[1].replies.en, 'Finished sending your data');
       assert.equal(conversations[1].messages.en.length, 2);
-      assert.equal(conversations[1].reply.de, 'Fertig Senden Ihrer Daten');
+      assert.equal(conversations[1].replies.de, 'Fertig Senden Ihrer Daten');
       assert.equal(conversations[1].messages.de.length, 1);
     });
     it('should contain conversation with non-default API', function() {
@@ -37,9 +37,9 @@ describe('OpenAPI-CloudFunctions Middleware Config', function() {
       assert.equal(conversations[0].name, 'Retrieving data');
       assert.equal(conversations[0].api, 'defaultApi');
       assert.equal(conversations[0].method, 'getData1');
-      assert.equal(conversations[0].reply.en, 'Here is your data... {data}');
+      assert.equal(conversations[0].replies.en, 'Here is your data... {data}');
       assert.equal(conversations[0].messages.en.length, 3);
-      assert.equal(conversations[0].reply.de, 'Hier sind Ihre Daten ... {data}');
+      assert.equal(conversations[0].replies.de, 'Hier sind Ihre Daten ... {data}');
       assert.equal(conversations[0].messages.de.length, 1);
     });
   });

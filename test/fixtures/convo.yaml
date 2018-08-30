@@ -18,9 +18,11 @@ conversations:
         - Retrieve my data
       de:
         - Hol mir meine Daten
-    reply:
-      en: Here is your data... {data}
-      de: Hier sind Ihre Daten ... {data}
+    replies:
+      en:
+        - Here is your data... {data}
+      de:
+        - Hier sind Ihre Daten ... {data}
     openapi_cloudfunctions:
       operation_id: getData1
   - name: Submitting data
@@ -30,9 +32,11 @@ conversations:
         - Sending my data
       de:
         - Senden meiner Daten
-    reply:
-      en: Finished sending your data
-      de: Fertig Senden Ihrer Daten
+    replies:
+      en:
+        - Finished sending your data
+      de:
+        - Fertig Senden Ihrer Daten
     openapi_cloudfunctions:
       operation_id: postData2
 middlewares:
