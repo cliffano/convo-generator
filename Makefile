@@ -1,4 +1,4 @@
-ci: clean deps lint install
+ci: clean deps lint test install
 
 clean:
 	rm -rf stage
