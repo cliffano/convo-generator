@@ -1,18 +1,37 @@
 [
   <%
-    for (var i = 0, len = conversation.messages[language].length; i < len; i++) {
+    for (var i = 0, iLen = conversation.messages[language].length; i < iLen; i++) {
   %>
   {
     "data": [
+    <%
+      for (var j = 0, jLen = conversation.messages[language][i].fragments.length; j < jLen; j++) {
+    %>
       {
-        "text": "<%= conversation.messages[language][i] %>",
+        <%
+          if (conversation.messages[language][i].fragments[j].is_param) {
+        %>
+        "text": "<%= conversation.messages[language][i].fragments[j].text %>",
+        "alias": "<%= conversation.messages[language][i].fragments[j].text %>",
+        "meta": "@<%= conversation.messages[language][i].fragments[j].text %>",
+        "userDefined": true
+        <%
+          } else {
+        %>
+        "text": "<%= conversation.messages[language][i].fragments[j].text %>",
         "userDefined": false
+        <%
+          }
+        %>
+      }<% if (j < jLen - 1) { %>,<% } %>
+    <%
       }
+    %>
     ],
     "isTemplate": false,
     "count": 0,
     "updated": 0
-  }<% if (i < len - 1) { %>,<% } %>
+  }<% if (i < iLen - 1) { %>,<% } %>
   <%
     }
   %>

@@ -13,9 +13,9 @@ conversations:
   - name: Retrieving data
     messages:
       en:
-        - Get me my data
-        - I want my data now
-        - Retrieve my data
+        - Get me my data from {dataSource} right now
+        - I want my data now from {dataSource}
+        - Retrieve from {dataSource} my data
       de:
         - Hol mir meine Daten
     replies:
