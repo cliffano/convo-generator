@@ -5,7 +5,12 @@
 Convo Generator
 ---------------
 
-Convo Generator is a Convo agents and middlewares generator using Yeoman.
+Convo Generator is a [Convo](http://github.com/cliffano/convo) agent and middleware generator using [Yeoman](http://yeoman.io/).
+
+Configuration
+-------------
+
+
 
 Usage
 -----
