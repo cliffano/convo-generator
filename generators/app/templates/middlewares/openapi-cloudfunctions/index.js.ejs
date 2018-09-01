@@ -107,7 +107,8 @@ exports.dialogflow = (request, response) => {
     const conversationLanguage = convo.dialogFlow.payload.getConversationLanguage(request.body);
     const conversationParams = convo.dialogFlow.payload.getConversationParams(request.body);
     console.info('Receiving conversation: %s, using language: %s', conversationName, conversationLanguage);
-    console.log('DialogFlow payload: %s', request.body);
+    console.log('DialogFlow payload:');
+    console.log(request.body);
 
     var convoOpts = {
       apis: apis,
