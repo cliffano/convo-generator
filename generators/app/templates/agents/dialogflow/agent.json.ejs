@@ -23,7 +23,8 @@
   "webhook": {
     "url": "<%= config.env.cloudfunctions.url %>",
     "headers": {
-      "User-Agent": "convo-dialogflow-agent"
+      "User-Agent": "convo-dialogflow-agent",
+      "Convo-Token": "<%= config.env.convo.token %>"
     },
     "available": true,
     "useForDomains": false,
