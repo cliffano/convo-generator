@@ -111,6 +111,11 @@ exports.dialogflow = (request, response) => {
   // defined in Convo specification. An API call will then be made to the OpenAPI service, which response
   // will then be used to construct the reply back to DialogFlow.
   function httpCallback(done) {
+
+    if (request.headers['convo-token'] !== '<%= config.env.convo.token %>') {
+      createErrorCallback(done)('Invalid Convo token: ' + request.headers['convo-token']);
+    }
+
     const conversationName = convo.dialogFlow.payload.getConversationName(request.body);
     const conversationLanguage = convo.dialogFlow.payload.getConversationLanguage(request.body);
     const conversationParams = convo.dialogFlow.payload.getConversationParams(request.body);
