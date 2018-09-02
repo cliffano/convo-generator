@@ -51,7 +51,7 @@ var <%= config.id() %>Auth = <%= config.id() %>Instance.authentications['<%= __b
   }
 %>
 
-exports.dialogflow = (request, response) => {
+function handleRequest(agent, request, response) {
 
   // Create a callback for handling error.
   // This callback logs an error message and then responds with a reply payload containing the error message.
@@ -59,7 +59,7 @@ exports.dialogflow = (request, response) => {
     return function(replyText) {
       replyText = textRenderer.renderText(replyText);
       console.error('Sending reply with error message: ' + replyText);
-      const replyPayload = convo.dialogFlow.payload.createReply(replyText);
+      const replyPayload = agent.payload.createReply(replyText);
       done(null, replyPayload);
     };
   }
@@ -76,7 +76,7 @@ exports.dialogflow = (request, response) => {
       } else {
         replyText = textRenderer.renderText(replyText);
         console.info('Sending reply with success message: ' + replyText);
-        const replyPayload = convo.dialogFlow.payload.createReply(replyText);
+        const replyPayload = agent.payload.createReply(replyText);
         done(null, replyPayload);
       }
     };
@@ -106,66 +106,73 @@ exports.dialogflow = (request, response) => {
     <% } %>
   }
 
-  // Callback for handling DialogFlow HTTP request.
-  // It receives the payload from DialogFlow, the payload details will then be matched to the conversations
+  // Callback for handling HTTP request.
+  // It receives the payload from Convo Agent, the payload details will then be matched to the conversations
   // defined in Convo specification. An API call will then be made to the OpenAPI service, which response
-  // will then be used to construct the reply back to DialogFlow.
+  // will then be used to construct the reply back to the Agent.
   function httpCallback(done) {
 
     if (request.headers['convo-token'] !== '<%= config.env.convo.token %>') {
       createErrorCallback(done)('Invalid Convo token: ' + request.headers['convo-token']);
-    }
+    } else {
 
-    const conversationName = convo.dialogFlow.payload.getConversationName(request.body);
-    const conversationLanguage = convo.dialogFlow.payload.getConversationLanguage(request.body);
-    const conversationParams = convo.dialogFlow.payload.getConversationParams(request.body);
+      const conversationName = agent.payload.getConversationName(request.body);
+      const conversationLanguage = agent.payload.getConversationLanguage(request.body);
+      const conversationParams = agent.payload.getConversationParams(request.body);
 
-    console.info('Receiving conversation: %s, using language: %s', conversationName, conversationLanguage);
-    console.log('DialogFlow payload:');
-    console.log(request.body);
+      console.info('Receiving conversation: %s, using language: %s', conversationName, conversationLanguage);
+      console.log('DialogFlow payload:');
+      console.log(request.body);
 
-    textRenderer.addParams(conversationParams);
+      textRenderer.addParams(conversationParams);
 
-    var convoOpts = {
-      apis: apis,
-      conversationName: conversationName,
-      conversationLanguage: conversationLanguage
-    };
+      var convoOpts = {
+        apis: apis,
+        conversationName: conversationName,
+        conversationLanguage: conversationLanguage
+      };
 
-    switch (conversationName) {
-    <%
-      /******************************************************************
-       * Match payload to the conversations defined in Convo specification
-       * based on conversation name and language.
-       ******************************************************************/
-      const __conversations = config.conversations();
-      for (var i = 0, iLen = __conversations.length; i < iLen; i++) {
-    %>
-      case '<%= __conversations[i].name %>':
-        switch (conversationLanguage) {
-        <%
-          const __languages = Object.keys(__conversations[i].replies);
-          for (var j = 0, jLen = __languages.length; j < jLen; j++) {
-            const randomReply = __conversations[i].replies[__languages[j]][Math.floor(Math.random() * jLen)];
-        %>
-          case '<%= __languages[j] %>':
-            console.info('Calling API: %s, with method: %s', '<%= __conversations[i].api %>', '<%= __conversations[i].method %>');
-            callApi(<%= __conversations[i].api %>, '<%= __conversations[i].method %>', conversationParams, '<%= randomReply %>', convoOpts, done);
-            break;
-        <%
+      switch (conversationName) {
+      <%
+        /******************************************************************
+         * Match payload to the conversations defined in Convo specification
+         * based on conversation name and language.
+         ******************************************************************/
+        const __conversations = config.conversations();
+        for (var i = 0, iLen = __conversations.length; i < iLen; i++) {
+      %>
+        case '<%= __conversations[i].name %>':
+          switch (conversationLanguage) {
+          <%
+            const __languages = Object.keys(__conversations[i].replies);
+            for (var j = 0, jLen = __languages.length; j < jLen; j++) {
+              const randomReply = __conversations[i].replies[__languages[j]][Math.floor(Math.random() * jLen)];
+          %>
+            case '<%= __languages[j] %>':
+              console.info('Calling API: %s, with method: %s', '<%= __conversations[i].api %>', '<%= __conversations[i].method %>');
+              callApi(<%= __conversations[i].api %>, '<%= __conversations[i].method %>', conversationParams, '<%= randomReply %>', convoOpts, done);
+              break;
+          <%
+            }
+          %>
+            default:
+              createErrorCallback(done)('Unsupported reply language: ' + conversationLanguage);
           }
-        %>
-          default:
-            createErrorCallback(done)('Unsupported reply language: ' + conversationLanguage);
+          break;
+      <%
         }
-        break;
-    <%
+      %>
+        default:
+          createErrorCallback(done)('Unsupported conversation: ' + conversationName);
       }
-    %>
-      default:
-        createErrorCallback(done)('Unsupported conversation: ' + conversationName);
     }
   }
 
-  convo.dialogFlow.http.handleRequest(request, response, httpCallback);
+  agent.http.handleRequest(request, response, httpCallback);
+}
+
+// Declare all Convo Agent-specific endpoint(s) here.
+// Agent payload and http processing methods should be implemented in convo-node.
+exports.dialogflow = (request, response) => {
+  handleRequest(convo.dialogFlow, request, response);
 };
