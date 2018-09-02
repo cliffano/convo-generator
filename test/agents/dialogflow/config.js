@@ -21,7 +21,7 @@ describe('DialogFlow Agent Config', function() {
       assert.equal(this.conversations[1].messages.de.length, 1);
     });
     it('should contain fragments and params', function() {
-      assert.equal(this.conversations[0].messages.en[0].text, 'Get me my data from {dataSource} right now');
+      assert.equal(this.conversations[0].messages.en[0].text, 'Get me my data from {{dataSource}} right now');
       assert.equal(this.conversations[0].messages.en[0].fragments.length, 3);
       assert.equal(this.conversations[0].messages.en[0].fragments[0].text, 'Get me my data from ');
       assert.equal(this.conversations[0].messages.en[0].fragments[0].is_param, false);

@@ -37,9 +37,9 @@ describe('OpenAPI-CloudFunctions Middleware Config', function() {
       assert.equal(conversations[0].name, 'Retrieving data');
       assert.equal(conversations[0].api, 'defaultApi');
       assert.equal(conversations[0].method, 'getData1');
-      assert.equal(conversations[0].replies.en, 'Here is your data... {data}');
+      assert.equal(conversations[0].replies.en, 'Here is your data... {{data}}');
       assert.equal(conversations[0].messages.en.length, 3);
-      assert.equal(conversations[0].replies.de, 'Hier sind Ihre Daten ... {data}');
+      assert.equal(conversations[0].replies.de, 'Hier sind Ihre Daten ... {{data}}');
       assert.equal(conversations[0].messages.de.length, 1);
     });
   });

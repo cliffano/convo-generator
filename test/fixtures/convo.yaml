@@ -13,16 +13,16 @@ conversations:
   - name: Retrieving data
     messages:
       en:
-        - Get me my data from {dataSource} right now
-        - I want my data now from {dataSource}
-        - Retrieve from {dataSource} my data
+        - Get me my data from {{dataSource}} right now
+        - I want my data now from {{dataSource}}
+        - Retrieve from {{dataSource}} my data
       de:
         - Hol mir meine Daten
     replies:
       en:
-        - Here is your data... {data}
+        - Here is your data... {{data}}
       de:
-        - Hier sind Ihre Daten ... {data}
+        - Hier sind Ihre Daten ... {{data}}
     openapi_cloudfunctions:
       operation_id: getData1
   - name: Submitting data
