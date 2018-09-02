@@ -8,7 +8,7 @@
 
 const convo = require('convo-node');
 const <%= config.id() %>Client = require('<%= config.convoSpec.middlewares.openapi_cloudfunctions.openapi.node_modules.api %>');
-
+var textRenderer = new convo.TextRenderer();
 <%
   /******************************************************************
    * Declare Convo Helper if one is supplied in Convo specification.
@@ -57,6 +57,7 @@ exports.dialogflow = (request, response) => {
   // This callback logs an error message and then responds with a reply payload containing the error message.
   function createErrorCallback(done) {
     return function(replyText) {
+      replyText = textRenderer.renderText(replyText);
       console.error('Sending reply with error message: ' + replyText);
       const replyPayload = convo.dialogFlow.payload.createReply(replyText);
       done(null, replyPayload);
@@ -67,9 +68,13 @@ exports.dialogflow = (request, response) => {
   // The callback signature with error, data, and response is defined by OpenAPI Generator.
   function createApiCallback(replyText, done) {
     return function(err, data, _response) {
+      if (data) {
+        textRenderer.addParams({ data: data });
+      }
       if (err) {
         createErrorCallback(done)(err.message);
       } else {
+        replyText = textRenderer.renderText(replyText);
         console.info('Sending reply with success message: ' + replyText);
         const replyPayload = convo.dialogFlow.payload.createReply(replyText);
         done(null, replyPayload);
@@ -84,6 +89,9 @@ exports.dialogflow = (request, response) => {
     const apiCb = createApiCallback(replyText, done);
     var args = [];
     <% if (config.convoSpec.middlewares.openapi_cloudfunctions.openapi.node_modules.helper) { %>
+      if (<%= config.id() %>Helper.textHelpers) {
+        textRenderer.addParams(<%= config.id() %>Helper.textHelpers);
+      }
       if (<%= config.id() %>Helper.callApi) {
         var errorCb = createErrorCallback(done);
         console.info('Using Convo Helper: %s', <%= config.id() %>Helper.getInfo());
@@ -106,9 +114,12 @@ exports.dialogflow = (request, response) => {
     const conversationName = convo.dialogFlow.payload.getConversationName(request.body);
     const conversationLanguage = convo.dialogFlow.payload.getConversationLanguage(request.body);
     const conversationParams = convo.dialogFlow.payload.getConversationParams(request.body);
+
     console.info('Receiving conversation: %s, using language: %s', conversationName, conversationLanguage);
     console.log('DialogFlow payload:');
     console.log(request.body);
+
+    textRenderer.addParams(conversationParams);
 
     var convoOpts = {
       apis: apis,
