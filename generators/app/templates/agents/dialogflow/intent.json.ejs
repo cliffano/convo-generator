@@ -3,20 +3,44 @@
   "auto": true,
   "contexts": [],
   "responses": [
+    <%
+      const languages = Object.keys(conversation.messages);
+      for (var i = 0, iLen = languages.length; i < iLen; i++) {
+    %>
     {
       "resetContexts": false,
       "affectedContexts": [],
-      "parameters": [],
+      "parameters": [
+      <%
+        const messages = conversation.messages[languages[i]];
+        for (var j = 0, jLen = messages.length; j < jLen; j++) {
+          for (var k = 0, kLen = messages[j].params.length; k < kLen; k++) {
+      %>
+      {
+        "required": false,
+        "dataType": "@<%= messages[j].params[k] %>",
+        "name": "<%= messages[j].params[k] %>",
+        "value": "$<%= messages[j].params[k] %>",
+        "isList": false
+      }<% if (j < jLen - 1 || k < kLen - 1) { %>,<% } %>
+      <%
+          }
+        }
+      %>
+      ],
       "messages": [
         {
           "type": 0,
-          "lang": "en",
+          "lang": "<%= languages[i] %>",
           "speech": []
         }
       ],
       "defaultResponsePlatforms": {},
       "speech": []
-    }
+    }<% if (i < iLen - 1) { %>,<% } %>
+    <%
+      }
+    %>
   ],
   "priority": 500000,
   "webhookUsed": true,
