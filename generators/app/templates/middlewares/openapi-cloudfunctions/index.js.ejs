@@ -68,9 +68,9 @@ function handleRequest(agent, request, response) {
   // The callback signature with error, data, and response is defined by OpenAPI Generator.
   function createApiCallback(replyText, done) {
     return function(err, data, _response) {
-      if (data) {
-        textRenderer.addParams({ data: data });
-      }
+      console.log('Payload from API service: ', data);
+      console.log('With response headers: ', _response.headers);
+      textRenderer.addParams({ data: data, headers: _response.headers });
       if (err) {
         createErrorCallback(done)(err.message);
       } else {
@@ -121,8 +121,7 @@ function handleRequest(agent, request, response) {
       const conversationParams = agent.payload.getConversationParams(request.body);
 
       console.info('Receiving conversation: %s, using language: %s', conversationName, conversationLanguage);
-      console.log('DialogFlow payload:');
-      console.log(request.body);
+      console.log('Payload from agent: ', request.body);
 
       textRenderer.addParams(conversationParams);
 
