@@ -1,0 +1,43 @@
+{
+  "name": "Fallback",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "input.unknown",
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+      <%
+        const languages = Object.keys(config.convoSpec.speeches.unclear.replies);
+        for (var i = 0, iLen = languages.length; i < iLen; i++) {
+      %>
+        {
+          "type": 0,
+          "lang": "<%= languages[i] %>",
+          "speech": [
+            <%
+              const replies = config.convoSpec.speeches.unknown.replies[languages[i]];
+              for (var j = 0, jLen = replies.length; j < jLen; j++) {
+            %>
+            "<%= replies[j] %>"<% if (j < jLen - 1) { %>,<% } %>
+            <%
+              }
+            %>
+          ]
+        }<% if (i < iLen - 1) { %>,<% } %>
+      <%
+        }
+      %>
+      ],
+      "defaultResponsePlatforms": {},
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": true,
+  "events": []
+}
