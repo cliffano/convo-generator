@@ -10,7 +10,7 @@
       "parameters": [],
       "messages": [
       <%
-        const languages = Object.keys(config.convoSpec.speeches.unclear.replies);
+        const languages = Object.keys(config.convoSpec.conversations.unknowns.replies);
         for (var i = 0, iLen = languages.length; i < iLen; i++) {
       %>
         {
@@ -18,7 +18,7 @@
           "lang": "<%= languages[i] %>",
           "speech": [
             <%
-              const replies = config.convoSpec.speeches.unknown.replies[languages[i]];
+              const replies = config.convoSpec.conversations.unknowns.replies[languages[i]];
               for (var j = 0, jLen = replies.length; j < jLen; j++) {
             %>
             "<%= replies[j] %>"<% if (j < jLen - 1) { %>,<% } %>

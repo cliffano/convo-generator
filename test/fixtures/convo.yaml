@@ -10,35 +10,52 @@ info:
     url: http://blog.cliffano.com
     email: blah@cliffano.com
 conversations:
-  - name: Retrieving data
-    messages:
-      en:
-        - Get me my data from {{dataSource}} right now
-        - I want my data now from {{dataSource}}
-        - Retrieve from {{dataSource}} my data
-      de:
-        - Hol mir meine Daten
+  greetings:
     replies:
-      en:
-        - Here is your data... {{data}}
+      en-au:
+        - Good day
+        - Hello there, I'm Some Service
       de:
-        - Hier sind Ihre Daten ... {{data}}
-    openapi_cloudfunctions:
-      operation_id: getData1
-  - name: Submitting data
-    messages:
-      en:
-        - Here's my data
-        - Sending my data
-      de:
-        - Senden meiner Daten
+        - Hallo!
+        - Ich grüße dich!
+  unknowns:
     replies:
-      en:
-        - Finished sending your data
+      en-au:
+        - Sorry, I didn't get that.
+        - Sorry, could you say that again?
       de:
-        - Fertig Senden Ihrer Daten
-    openapi_cloudfunctions:
-      operation_id: postData2
+        - Ich bin nicht so sicher, ob ich dich richtig verstanden habe.
+        - Leider kann ich nicht verstehen, was du von mir möchtest.
+  queries:
+    - name: Retrieving data
+      messages:
+        en:
+          - Get me my data from {{dataSource}} right now
+          - I want my data now from {{dataSource}}
+          - Retrieve from {{dataSource}} my data
+        de:
+          - Hol mir meine Daten
+      replies:
+        en:
+          - Here is your data... {{data}}
+        de:
+          - Hier sind Ihre Daten ... {{data}}
+      openapi_cloudfunctions:
+        operation_id: getData1
+    - name: Submitting data
+      messages:
+        en:
+          - Here's my data
+          - Sending my data
+        de:
+          - Senden meiner Daten
+      replies:
+        en:
+          - Finished sending your data
+        de:
+          - Fertig Senden Ihrer Daten
+      openapi_cloudfunctions:
+        operation_id: postData2
 middlewares:
   openapi_cloudfunctions:
     openapi:

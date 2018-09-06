@@ -137,19 +137,19 @@ function handleRequest(agent, request, response) {
          * Match payload to the conversations defined in Convo specification
          * based on conversation name and language.
          ******************************************************************/
-        const __conversations = config.conversations();
-        for (var i = 0, iLen = __conversations.length; i < iLen; i++) {
+        const __queryConversations = config.conversations().queries;
+        for (var i = 0, iLen = __queryConversations.length; i < iLen; i++) {
       %>
-        case '<%= __conversations[i].name %>':
+        case '<%= __queryConversations[i].name %>':
           switch (conversationLanguage) {
           <%
-            const __languages = Object.keys(__conversations[i].replies);
+            const __languages = Object.keys(__queryConversations[i].replies);
             for (var j = 0, jLen = __languages.length; j < jLen; j++) {
-              const randomReply = __conversations[i].replies[__languages[j]][Math.floor(Math.random() * jLen)];
+              const randomReply = __queryConversations[i].replies[__languages[j]][Math.floor(Math.random() * jLen)];
           %>
             case '<%= __languages[j] %>':
-              console.info('Calling API: %s, with method: %s', '<%= __conversations[i].api %>', '<%= __conversations[i].method %>');
-              callApi(<%= __conversations[i].api %>, '<%= __conversations[i].method %>', conversationParams, '<%= randomReply %>', convoOpts, done);
+              console.info('Calling API: %s, with method: %s', '<%= __queryConversations[i].api %>', '<%= __queryConversations[i].method %>');
+              callApi(<%= __queryConversations[i].api %>, '<%= __queryConversations[i].method %>', conversationParams, '<%= randomReply %>', convoOpts, done);
               break;
           <%
             }
