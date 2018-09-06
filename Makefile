@@ -6,6 +6,9 @@ clean:
 deps:
 	npm install .
 
+deps-local:
+	cd ../convo-node && npm link
+
 lint:
 	npm run-script lint
 
