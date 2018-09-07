@@ -1,6 +1,11 @@
 <img align="right" src="https://raw.github.com/cliffano/convo-generator/master/avatar.jpg" alt="Avatar"/>
 
 [![Build Status](https://img.shields.io/travis/cliffano/convo-generator.svg)](http://travis-ci.org/cliffano/convo-generator)
+[![Dependencies Status](https://img.shields.io/david/cliffano/convo-generator.svg)](http://david-dm.org/cliffano/convo-generator)
+[![Coverage Status](https://img.shields.io/coveralls/cliffano/convo-generator.svg)](https://coveralls.io/r/cliffano/convo-generator?branch=master)
+[![Published Version](https://img.shields.io/npm/v/convo-generator.svg)](http://www.npmjs.com/package/convo-generator)
+<br/>
+[![npm Badge](https://nodei.co/npm/convo-generator.png)](http://npmjs.org/package/convo-generator)
 
 Convo Generator
 ---------------
@@ -9,8 +14,6 @@ Convo Generator is a [Convo](http://github.com/cliffano/convo) agent and middlew
 
 Configuration
 -------------
-
-
 
 Usage
 -----
@@ -28,11 +31,8 @@ Colophon
 
 Related Projects:
 
-* [convo](http://github.com/cliffano/convo) - Conversation specification based ChatOps tool
-* [convo-node](http://github.com/cliffano/convo-node) - node.js module for Convo ChatOps tool
-
-Example Projects:
-
-* [convo-jenkins](http://github.com/cliffano/convo-jenkins) - Convo agent and middleware for Jenkins
-* [convo-jenkins-helper](http://github.com/cliffano/convo-jenkins-helper) - Convo helper library for Jenkins
-* [convo-ipify](http://github.com/cliffano/convo-ipify) - Convo agent and middleware for ipify
+* [Convo](http://github.com/cliffano/convo) - Specification based voice and text conversation app
+* [convo-generator](http://github.com/cliffano/convo-generator) - node.js module for Convo ChatOps tool
+* [Convo Jenkins](http://github.com/cliffano/convo-jenkins) - Convo agent and middleware for Jenkins
+* [Convo Jenkins Helper](http://github.com/cliffano/convo-jenkins-helper) - Helper node.js module for Convo Jenkins
+* [Convo ipify](http://github.com/cliffano/convo-ipify) - Convo agent and middleware for ipify
