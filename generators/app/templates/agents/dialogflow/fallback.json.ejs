@@ -12,22 +12,17 @@
       <%
         const languages = Object.keys(config.convoSpec.conversations.unknowns.replies);
         for (var i = 0, iLen = languages.length; i < iLen; i++) {
+          const replies = config.convoSpec.conversations.unknowns.replies[languages[i]];
+          for (var j = 0, jLen = replies.length; j < jLen; j++) {
       %>
         {
-          "type": 0,
+          "type": "simple_response",
           "lang": "<%= languages[i] %>",
-          "speech": [
-            <%
-              const replies = config.convoSpec.conversations.unknowns.replies[languages[i]];
-              for (var j = 0, jLen = replies.length; j < jLen; j++) {
-            %>
-            "<%= replies[j] %>"<% if (j < jLen - 1) { %>,<% } %>
-            <%
-              }
-            %>
-          ]
-        }<% if (i < iLen - 1) { %>,<% } %>
+          "platform": "google",
+          "textToSpeech": "<%= replies[j] %>"
+        }<% if (i < iLen - 1 || j < jLen - 1) { %>,<% } %>
       <%
+          }
         }
       %>
       ],

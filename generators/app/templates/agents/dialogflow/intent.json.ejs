@@ -1,10 +1,10 @@
 {
-  "name": "<%= conversation.name %>",
+  "name": "<%= query.name %>",
   "auto": true,
   "contexts": [],
   "responses": [
     <%
-      const languages = Object.keys(conversation.messages);
+      const languages = Object.keys(query.messages);
       for (var i = 0, iLen = languages.length; i < iLen; i++) {
     %>
     {
@@ -12,7 +12,7 @@
       "affectedContexts": [],
       "parameters": [
       <%
-        const messages = conversation.messages[languages[i]];
+        const messages = query.messages[languages[i]];
         for (var j = 0, jLen = messages.length; j < jLen; j++) {
           for (var k = 0, kLen = messages[j].params.length; k < kLen; k++) {
       %>

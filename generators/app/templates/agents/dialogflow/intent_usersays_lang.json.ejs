@@ -1,24 +1,24 @@
 [
   <%
-    for (var i = 0, iLen = conversation.messages[language].length; i < iLen; i++) {
+    for (var i = 0, iLen = query.messages[language].length; i < iLen; i++) {
   %>
   {
     "data": [
     <%
-      for (var j = 0, jLen = conversation.messages[language][i].fragments.length; j < jLen; j++) {
+      for (var j = 0, jLen = query.messages[language][i].fragments.length; j < jLen; j++) {
     %>
       {
         <%
-          if (conversation.messages[language][i].fragments[j].is_param) {
+          if (query.messages[language][i].fragments[j].is_param) {
         %>
-        "text": "<%= conversation.messages[language][i].fragments[j].text %>",
-        "alias": "<%= conversation.messages[language][i].fragments[j].text %>",
-        "meta": "@<%= conversation.messages[language][i].fragments[j].text %>",
+        "text": "<%= query.messages[language][i].fragments[j].text %>",
+        "alias": "<%= query.messages[language][i].fragments[j].text %>",
+        "meta": "@<%= query.messages[language][i].fragments[j].text %>",
         "userDefined": true
         <%
           } else {
         %>
-        "text": "<%= conversation.messages[language][i].fragments[j].text %>",
+        "text": "<%= query.messages[language][i].fragments[j].text %>",
         "userDefined": false
         <%
           }

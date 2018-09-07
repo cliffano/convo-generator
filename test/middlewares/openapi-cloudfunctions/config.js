@@ -17,30 +17,30 @@ describe('OpenAPI-CloudFunctions Middleware Config', function() {
       assert.equal(Object.keys(this.config.apis()).includes('someTagApi'), true);
     });
   });
-  describe('conversations', function() {
-    it('should contain all conversations', function() {
-      const conversations = this.config.conversations();
-      assert.equal(conversations.queries.length, 2);
+  describe('queries', function() {
+    it('should contain all queries', function() {
+      const queries = this.config.queries();
+      assert.equal(queries.queries.length, 2);
     });
-    it('should contain conversation with default API', function() {
-      const conversations = this.config.conversations();
-      assert.equal(conversations.queries[1].name, 'Submitting data');
-      assert.equal(conversations.queries[1].api, 'someTagApi');
-      assert.equal(conversations.queries[1].method, 'postData2');
-      assert.equal(conversations.queries[1].replies.en, 'Finished sending your data');
-      assert.equal(conversations.queries[1].messages.en.length, 2);
-      assert.equal(conversations.queries[1].replies.de, 'Fertig Senden Ihrer Daten');
-      assert.equal(conversations.queries[1].messages.de.length, 1);
+    it('should contain query with default API', function() {
+      const queries = this.config.queries();
+      assert.equal(queries.queries[1].name, 'Submitting data');
+      assert.equal(queries.queries[1].api, 'someTagApi');
+      assert.equal(queries.queries[1].method, 'postData2');
+      assert.equal(queries.queries[1].replies.en, 'Finished sending your data');
+      assert.equal(queries.queries[1].messages.en.length, 2);
+      assert.equal(queries.queries[1].replies.de, 'Fertig Senden Ihrer Daten');
+      assert.equal(queries.queries[1].messages.de.length, 1);
     });
-    it('should contain conversation with non-default API', function() {
-      const conversations = this.config.conversations();
-      assert.equal(conversations.queries[0].name, 'Retrieving data');
-      assert.equal(conversations.queries[0].api, 'defaultApi');
-      assert.equal(conversations.queries[0].method, 'getData1');
-      assert.equal(conversations.queries[0].replies.en, 'Here is your data... {{data}}');
-      assert.equal(conversations.queries[0].messages.en.length, 3);
-      assert.equal(conversations.queries[0].replies.de, 'Hier sind Ihre Daten ... {{data}}');
-      assert.equal(conversations.queries[0].messages.de.length, 1);
+    it('should contain query with non-default API', function() {
+      const queries = this.config.queries();
+      assert.equal(queries.queries[0].name, 'Retrieving data');
+      assert.equal(queries.queries[0].api, 'defaultApi');
+      assert.equal(queries.queries[0].method, 'getData1');
+      assert.equal(queries.queries[0].replies.en, 'Here is your data... {{data}}');
+      assert.equal(queries.queries[0].messages.en.length, 3);
+      assert.equal(queries.queries[0].replies.de, 'Hier sind Ihre Daten ... {{data}}');
+      assert.equal(queries.queries[0].messages.de.length, 1);
     });
   });
   describe('basicHttpAuths', function() {

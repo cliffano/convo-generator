@@ -9,7 +9,7 @@ info:
     name: Cliffano Subagio
     url: http://blog.cliffano.com
     email: blah@cliffano.com
-conversations:
+queries:
   greetings:
     replies:
       en-au:

@@ -84,7 +84,7 @@ function handleRequest(agent, request, response) {
 
   // Call API method using a Convo Helper if it has a callApi function,
   // otherwise the API will be called directly without Convo Helper by mapping
-  // the conversation to the operation ID.
+  // the query to the operation ID.
   function callApi(api, method, params, replyText, opts, done) {
     const apiCb = createApiCallback(replyText, done);
     var args = [];
@@ -107,7 +107,7 @@ function handleRequest(agent, request, response) {
   }
 
   // Callback for handling HTTP request.
-  // It receives the payload from Convo Agent, the payload details will then be matched to the conversations
+  // It receives the payload from Convo Agent, the payload details will then be matched to the queries
   // defined in Convo specification. An API call will then be made to the OpenAPI service, which response
   // will then be used to construct the reply back to the Agent.
   function httpCallback(done) {
@@ -116,53 +116,53 @@ function handleRequest(agent, request, response) {
       createErrorCallback(done)('Invalid Convo token: ' + request.headers['convo-token']);
     } else {
 
-      const conversationName = agent.payload.getConversationName(request.body);
-      const conversationLanguage = agent.payload.getConversationLanguage(request.body);
-      const conversationParams = agent.payload.getConversationParams(request.body);
+      const queryName = agent.payload.getQueryName(request.body);
+      const queryLanguage = agent.payload.getQueryLanguage(request.body);
+      const queryParams = agent.payload.getQueryParams(request.body);
 
-      console.info('Receiving conversation: %s, using language: %s', conversationName, conversationLanguage);
+      console.info('Receiving query: %s, using language: %s', queryName, queryLanguage);
       console.log('Payload from agent: ', request.body);
 
-      textRenderer.addParams(conversationParams);
+      textRenderer.addParams(queryParams);
 
       var convoOpts = {
         apis: apis,
-        conversationName: conversationName,
-        conversationLanguage: conversationLanguage
+        queryName: queryName,
+        queryLanguage: queryLanguage
       };
 
-      switch (conversationName) {
+      switch (queryName) {
       <%
         /******************************************************************
-         * Match payload to the conversations defined in Convo specification
-         * based on conversation name and language.
+         * Match payload to the queries defined in Convo specification
+         * based on query name and language.
          ******************************************************************/
-        const __queryConversations = config.conversations().queries;
-        for (var i = 0, iLen = __queryConversations.length; i < iLen; i++) {
+        const __queries = config.queries().queries;
+        for (var i = 0, iLen = __queries.length; i < iLen; i++) {
       %>
-        case '<%= __queryConversations[i].name %>':
-          switch (conversationLanguage) {
+        case '<%= __queries[i].name %>':
+          switch (queryLanguage) {
           <%
-            const __languages = Object.keys(__queryConversations[i].replies);
+            const __languages = Object.keys(__queries[i].replies);
             for (var j = 0, jLen = __languages.length; j < jLen; j++) {
-              const randomReply = __queryConversations[i].replies[__languages[j]][Math.floor(Math.random() * jLen)];
+              const randomReply = __queries[i].replies[__languages[j]][Math.floor(Math.random() * jLen)];
           %>
             case '<%= __languages[j] %>':
-              console.info('Calling API: %s, with method: %s', '<%= __queryConversations[i].api %>', '<%= __queryConversations[i].method %>');
-              callApi(<%= __queryConversations[i].api %>, '<%= __queryConversations[i].method %>', conversationParams, '<%= randomReply %>', convoOpts, done);
+              console.info('Calling API: %s, with method: %s', '<%= __queries[i].api %>', '<%= __queries[i].method %>');
+              callApi(<%= __queries[i].api %>, '<%= __queries[i].method %>', queryParams, '<%= randomReply %>', convoOpts, done);
               break;
           <%
             }
           %>
             default:
-              createErrorCallback(done)('Unsupported reply language: ' + conversationLanguage);
+              createErrorCallback(done)('Unsupported reply language: ' + queryLanguage);
           }
           break;
       <%
         }
       %>
         default:
-          createErrorCallback(done)('Unsupported conversation: ' + conversationName);
+          createErrorCallback(done)('Unsupported query: ' + queryName);
       }
     }
   }

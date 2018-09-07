@@ -10,17 +10,19 @@
       "parameters": [],
       "messages": [
       <%
-        const languages = Object.keys(greetings Pact);
+        const languages = Object.keys(config.convoSpec.conversations.greetings.replies);
         for (var i = 0, iLen = languages.length; i < iLen; i++) {
-          const replies = config.convoSpec.conversations.greetings[languages[i]].replies
+          const replies = config.convoSpec.conversations.greetings.replies[languages[i]];
+          for (var j = 0, jLen = replies.length; j < jLen; j++) {
       %>
         {
           "type": "simple_response",
           "lang": "<%= languages[i] %>",
           "platform": "google",
-          "textToSpeech": "<%= replies[i] %>"
-         }<% if (i < iLen - 1) { %>,<% } %>
+          "textToSpeech": "<%= replies[j] %>"
+        }<% if (i < iLen - 1 || j < jLen - 1) { %>,<% } %>
       <%
+          }
         }
       %>
       ],
