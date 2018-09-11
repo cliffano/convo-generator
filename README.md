@@ -12,8 +12,21 @@ Convo Generator
 
 Convo Generator is a [Convo](http://github.com/cliffano/convo) agent and middleware generator using [Yeoman](http://yeoman.io/).
 
+This generator reads the environment configuration, Convo specification, and OpenAPI specification, which would then be used to generate:
+
+* A Convo agent in the form of [Dialogflow export zip](https://dialogflow.com/docs/agents/export-import-restore) which can then be imported or restored into your Dialogflow project
+* A Convo middleware in the form of [Serverless app with CloudFunctions](https://github.com/serverless/serverless-google-cloudfunctions) which can then be deployed to your GCP project.
+
+Please have a look at [Convo Jenkins](http://github.com/cliffano/convo-jenkins) and [Convo ipify](http://github.com/cliffano/convo-ipify) as examples of how Convo Generator can be used.
+
 Configuration
 -------------
+
+Create the following configuration files:
+
+1. [Environment configuration](https://github.com/cliffano/convo/blob/master/docs/environment-configuration.md)
+2. [Convo specification](https://github.com/cliffano/convo/blob/master/docs/convo-specification.md)
+3. [OpenAPI specification](https://github.com/cliffano/convo/blob/master/docs/openapi-specification.md)
 
 Usage
 -----
