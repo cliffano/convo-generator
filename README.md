@@ -19,6 +19,21 @@ This generator reads the environment configuration, Convo specification, and Ope
 
 Please have a look at [Convo Jenkins](http://github.com/cliffano/convo-jenkins) and [Convo ipify](http://github.com/cliffano/convo-ipify) as examples of how Convo Generator can be used.
 
+Installation
+------------
+
+Install [Yeoman](http://yeoman.io/):
+
+    npm install -g yo
+
+Install Convo Generator:
+
+    npm install -g convo-generator
+
+Install [Serverless](https://serverless.com/):
+
+    npm install -g serverless
+
 Configuration
 -------------
 
@@ -31,13 +46,19 @@ Create the following configuration files:
 Usage
 -----
 
+Generate OpenAPI-CloudFunctions middleware:
+
+    yo convo openapi-cloudfunctions-middleware </path/to/env.yaml> </path/to/convo-spec.yaml> </path/to/openapi-spec.yaml>
+
+Deploy the generated middleware:
+
+    serverless deploy
+
 Generate DialogFlow agent:
 
     yo convo dialogflow-agent </path/to/env.yaml> </path/to/convo-spec.yaml>
 
-Generate OpenAPI-CloudFunctions middleware:
-
-    yo convo openapi-cloudfunctions-middleware </path/to/env.yaml> </path/to/convo-spec.yaml> </path/to/openapi-spec.yaml>
+You will then need to zip up the generated agent, and then [import or restore the zip file](https://dialogflow.com/docs/agents/export-import-restore) to Dialogflow.
 
 Colophon
 --------
