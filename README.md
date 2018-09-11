@@ -3,7 +3,7 @@
 [![Build Status](https://img.shields.io/travis/cliffano/convo-generator.svg)](http://travis-ci.org/cliffano/convo-generator)
 [![Dependencies Status](https://img.shields.io/david/cliffano/convo-generator.svg)](http://david-dm.org/cliffano/convo-generator)
 [![Coverage Status](https://img.shields.io/coveralls/cliffano/convo-generator.svg)](https://coveralls.io/r/cliffano/convo-generator?branch=master)
-[![Published Version](https://img.shields.io/npm/v/convo-generator.svg)](http://www.npmjs.com/package/convo-generator)
+[![Published Version](https://img.shields.io/npm/v/generator-convo.svg)](http://www.npmjs.com/package/generator-convo)
 <br/>
 [![npm Badge](https://nodei.co/npm/convo-generator.png)](http://npmjs.org/package/convo-generator)
 
