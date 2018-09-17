@@ -35,7 +35,12 @@
   "customClassifierMode": "use.after",
   "mlMinConfidence": 0.3,
   "supportedLanguages": [
-    "de"
+  <%
+    const languages = config.languages();
+    for (var i = 0, iLen = languages.length; i < iLen; i++) {
+  %>
+    "<%= languages[i] %>"<% if (i < iLen - 1) { %>,<% } %>
+  <% } %>
   ],
   "onePlatformApiVersion": "v2",
   "analyzeQueryTextSentiment": false,

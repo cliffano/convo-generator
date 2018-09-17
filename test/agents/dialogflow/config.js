@@ -6,8 +6,8 @@ describe('DialogFlow Agent Config', function() {
   beforeEach(function () {
     const envString = fs.readFileSync('test/fixtures/env.yaml', 'utf8');
     const convoSpecString = fs.readFileSync('test/fixtures/convo.yaml', 'utf8');
-    const config = new Config(envString, convoSpecString);
-    this.queries = config.queries();
+    this.config = new Config(envString, convoSpecString);
+    this.queries = this.config.queries();
   });
   describe('queries', function() {
     it('should contain all languages', function() {
@@ -36,6 +36,14 @@ describe('DialogFlow Agent Config', function() {
       assert.equal(this.queries.queries[1].messages.en[0].text, 'Here\'s my data');
       assert.equal(this.queries.queries[1].messages.en[0].fragments.length, 1);
       assert.equal(this.queries.queries[1].messages.en[0].params.length, 0);
+    });
+  });
+  describe('languages', function() {
+    it('should contain all languages', function() {
+      assert.equal(this.config.languages().length, 3);
+      assert.equal(this.config.languages()[0], 'en-au');
+      assert.equal(this.config.languages()[1], 'de');
+      assert.equal(this.config.languages()[2], 'en');
     });
   });
 });

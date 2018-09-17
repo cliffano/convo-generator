@@ -19,6 +19,7 @@
     "publish-coverage": "cat stage/coverage.lcov | node_modules/coveralls/bin/coveralls.js"
   },
   "dependencies": {
+    "lodash": "^4.17.11",
     "voca": "^1.4.0",
     "yaml": "^1.0.0-rc.7",
     "yeoman-generator": "^1.0.0"
