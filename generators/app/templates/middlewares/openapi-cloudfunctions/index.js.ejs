@@ -145,7 +145,8 @@ function handleRequest(agent, request, response) {
           <%
             const __languages = Object.keys(__queries[i].replies);
             for (var j = 0, jLen = __languages.length; j < jLen; j++) {
-              const randomReply = __queries[i].replies[__languages[j]][Math.floor(Math.random() * jLen)];
+              const numOfReplies = __queries[i].replies[__languages[j]].length;
+              const randomReply = __queries[i].replies[__languages[j]][Math.floor(Math.random() * numOfReplies)];
           %>
             case '<%= __languages[j] %>':
               console.info('Calling API: %s, with method: %s', '<%= __queries[i].api %>', '<%= __queries[i].method %>');
