@@ -31,7 +31,7 @@ conversations:
       messages:
         en:
           - Get me my data from {{dataSource}} right now
-          - I want my data now from {{dataSource}}
+          - G'day, I want my data now from {{dataSource}}
           - Retrieve from {{dataSource}} my data
         de:
           - Hol mir meine Daten

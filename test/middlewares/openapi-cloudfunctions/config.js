@@ -39,8 +39,12 @@ describe('OpenAPI-CloudFunctions Middleware Config', function() {
       assert.equal(queries.queries[0].method, 'getData1');
       assert.equal(queries.queries[0].replies.en, 'Here is your data... {{data}}');
       assert.equal(queries.queries[0].messages.en.length, 3);
+      assert.equal(queries.queries[0].messages.en[0], 'Get me my data from {{dataSource}} right now');
+      assert.equal(queries.queries[0].messages.en[1], 'G\'day, I want my data now from {{dataSource}}');
+      assert.equal(queries.queries[0].messages.en[2], 'Retrieve from {{dataSource}} my data');
       assert.equal(queries.queries[0].replies.de, 'Hier sind Ihre Daten ... {{data}}');
       assert.equal(queries.queries[0].messages.de.length, 1);
+      assert.equal(queries.queries[0].messages.de[0], 'Hol mir meine Daten');
     });
   });
   describe('basicHttpAuths', function() {
