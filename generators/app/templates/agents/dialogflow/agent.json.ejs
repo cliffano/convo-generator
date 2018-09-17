@@ -37,7 +37,7 @@
   "supportedLanguages": [
   <%
     const languages = config.languages();
-    for (var i = 0, iLen = languages.length; i < iLen; i++) {
+    for (let i = 0, iLen = languages.length; i < iLen; i++) {
   %>
     "<%= languages[i] %>"<% if (i < iLen - 1) { %>,<% } %>
   <% } %>

@@ -1,11 +1,11 @@
 [
   <%
-    for (var i = 0, iLen = query.messages[language].length; i < iLen; i++) {
+    for (let i = 0, iLen = query.messages[language].length; i < iLen; i++) {
   %>
   {
     "data": [
     <%
-      for (var j = 0, jLen = query.messages[language][i].fragments.length; j < jLen; j++) {
+      for (let j = 0, jLen = query.messages[language][i].fragments.length; j < jLen; j++) {
     %>
       {
         <%

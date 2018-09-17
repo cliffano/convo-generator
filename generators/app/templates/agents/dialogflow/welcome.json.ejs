@@ -11,9 +11,9 @@
       "messages": [
       <%
         const languages = Object.keys(config.convoSpec.conversations.greetings.replies);
-        for (var i = 0, iLen = languages.length; i < iLen; i++) {
+        for (let i = 0, iLen = languages.length; i < iLen; i++) {
           const replies = config.convoSpec.conversations.greetings.replies[languages[i]];
-          for (var j = 0, jLen = replies.length; j < jLen; j++) {
+          for (let j = 0, jLen = replies.length; j < jLen; j++) {
       %>
         {
           "type": "simple_response",

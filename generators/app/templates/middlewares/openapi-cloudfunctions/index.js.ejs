@@ -8,7 +8,7 @@
 
 const convo = require('convo-node');
 const <%= config.id() %>Client = require('<%= config.convoSpec.middlewares.openapi_cloudfunctions.openapi.node_modules.api %>');
-var textRenderer = new convo.TextRenderer();
+let textRenderer = new convo.TextRenderer();
 <%
   /******************************************************************
    * Declare Convo Helper if one is supplied in Convo specification.
@@ -18,14 +18,14 @@ var textRenderer = new convo.TextRenderer();
 const <%= config.id() %>Helper = require('<%= config.convoSpec.middlewares.openapi_cloudfunctions.openapi.node_modules.helper %>');
 <% } %>
 
-var apis = {};
+let apis = {};
 <%
   /******************************************************************
    * Declare all APIs defined in OpenAPI spec and set their base path.
    ******************************************************************/
   const __apis = config.apis();
   const __apiKeys = Object.keys(__apis);
-  for (var i = 0, len = __apiKeys.length; i < len; i++) {
+  for (let i = 0, len = __apiKeys.length; i < len; i++) {
 %>
 const <%= __apiKeys[i] %> = new <%= config.id() %>Client.<%= __apis[__apiKeys[i]] %>();
 <%= __apiKeys[i]  %>.apiClient.basePath = '<%= config.env.openapi.url %>';
@@ -41,9 +41,9 @@ const <%= config.id() %>Instance = <%= config.id() %>Client.ApiClient.instance;
    ******************************************************************/
   if (config.hasBasicHttpAuths()) {
     const __basicHttpAuths = config.basicHttpAuths();
-    for (var i = 0, len = __basicHttpAuths.length; i < len; i++) {
+    for (let i = 0, len = __basicHttpAuths.length; i < len; i++) {
 %>
-var <%= config.id() %>Auth = <%= config.id() %>Instance.authentications['<%= __basicHttpAuths[i] %>'];
+let <%= config.id() %>Auth = <%= config.id() %>Instance.authentications['<%= __basicHttpAuths[i] %>'];
 <%= config.id() %>Auth.username = '<%= config.env.openapi.username %>';
 <%= config.id() %>Auth.password = '<%= config.env.openapi.password %>';
 <%
@@ -87,13 +87,13 @@ function handleRequest(agent, request, response) {
   // the query to the operation ID.
   function callApi(api, method, params, replyText, opts, done) {
     const apiCb = createApiCallback(replyText, done);
-    var args = [];
+    let args = [];
     <% if (config.convoSpec.middlewares.openapi_cloudfunctions.openapi.node_modules.helper) { %>
       if (<%= config.id() %>Helper.textHelpers) {
         textRenderer.addParams(<%= config.id() %>Helper.textHelpers);
       }
       if (<%= config.id() %>Helper.callApi) {
-        var errorCb = createErrorCallback(done);
+        let errorCb = createErrorCallback(done);
         console.info('Using Convo Helper: %s', <%= config.id() %>Helper.getInfo());
         <%= config.id() %>Helper.callApi(api, method, params, apiCb, errorCb, opts);
       } else {
@@ -125,7 +125,7 @@ function handleRequest(agent, request, response) {
 
       textRenderer.addParams(queryParams);
 
-      var convoOpts = {
+      let convoOpts = {
         apis: apis,
         queryName: queryName,
         queryLanguage: queryLanguage
@@ -138,13 +138,13 @@ function handleRequest(agent, request, response) {
          * based on query name and language.
          ******************************************************************/
         const __queries = config.queries().queries;
-        for (var i = 0, iLen = __queries.length; i < iLen; i++) {
+        for (let i = 0, iLen = __queries.length; i < iLen; i++) {
       %>
         case '<%= __queries[i].name %>':
           switch (queryLanguage) {
           <%
             const __languages = Object.keys(__queries[i].replies);
-            for (var j = 0, jLen = __languages.length; j < jLen; j++) {
+            for (let j = 0, jLen = __languages.length; j < jLen; j++) {
               const numOfReplies = __queries[i].replies[__languages[j]].length;
               const randomReply = __queries[i].replies[__languages[j]][Math.floor(Math.random() * numOfReplies)];
           %>
