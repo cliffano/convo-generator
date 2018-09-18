@@ -12,15 +12,16 @@
       "affectedContexts": [],
       "parameters": [
       <%
+        // TODO: make params unique across all messages
         const messages = query.messages[languages[i]];
         for (let j = 0, jLen = messages.length; j < jLen; j++) {
           for (let k = 0, kLen = messages[j].params.length; k < kLen; k++) {
       %>
       {
         "required": false,
-        "dataType": "@<%= messages[j].params[k] %>",
+        "dataType": "@<%- messages[j].params[k] %>",
         "name": "<%- messages[j].params[k] %>",
-        "value": "$<%= messages[j].params[k] %>",
+        "value": "$<%- messages[j].params[k] %>",
         "isList": false
       }<% if (j < jLen - 1 || k < kLen - 1) { %>,<% } %>
       <%
