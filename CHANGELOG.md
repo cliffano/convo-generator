@@ -2,6 +2,7 @@
 * Fix empty reply message due to incorrect random index
 * Retrieve Dialogflow supported languages from Convo specification #2
 * Remove character escaping for JSON property values #1
+* Fix Dialogflow generating only the last parameter entries language file
 
 ### 0.0.1
 * Initial version
