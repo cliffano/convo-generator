@@ -3,9 +3,9 @@
   for (let i = 0, len = param.synonyms.length; i < len; i++) {
 %>
 {
-  "value": "<%= param.synonyms[i] %>",
+  "value": "<%- param.synonyms[i] %>",
   "synonyms": [
-    "<%= param.synonyms[i] %>"
+    "<%- param.synonyms[i] %>"
   ]
 }<% if (i < len - 1) { %>,<% } %>
 <%

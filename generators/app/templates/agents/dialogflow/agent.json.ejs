@@ -1,11 +1,11 @@
 {
-  "description": "<%= config.convoSpec.info.description %>",
-  "language": "<%= config.convoSpec.info.primary_language %>",
+  "description": "<%- config.convoSpec.info.description %>",
+  "language": "<%- config.convoSpec.info.primary_language %>",
   "disableInteractionLogs": false,
   "disableStackdriverLogs": true,
   "googleAssistant": {
     "googleAssistantCompatible": false,
-    "project": "<%= config.convoSpec.agents.dialogflow.project_id %>",
+    "project": "<%- config.convoSpec.agents.dialogflow.project_id %>",
     "welcomeIntentSignInRequired": false,
     "startIntents": [],
     "systemIntents": [],
@@ -19,12 +19,12 @@
     "protocolVersion": "V2",
     "isDeviceAgent": false
   },
-  "defaultTimezone": "<%= config.convoSpec.info.timezone %>",
+  "defaultTimezone": "<%- config.convoSpec.info.timezone %>",
   "webhook": {
-    "url": "<%= config.env.cloudfunctions.url %>",
+    "url": "<%- config.env.cloudfunctions.url %>",
     "headers": {
       "User-Agent": "convo-dialogflow-agent",
-      "Convo-Token": "<%= config.env.convo.token %>"
+      "Convo-Token": "<%- config.env.convo.token %>"
     },
     "available": true,
     "useForDomains": false,
@@ -39,7 +39,7 @@
     const languages = config.languages();
     for (let i = 0, iLen = languages.length; i < iLen; i++) {
   %>
-    "<%= languages[i] %>"<% if (i < iLen - 1) { %>,<% } %>
+    "<%- languages[i] %>"<% if (i < iLen - 1) { %>,<% } %>
   <% } %>
   ],
   "onePlatformApiVersion": "v2",

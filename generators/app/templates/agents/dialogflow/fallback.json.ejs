@@ -17,9 +17,9 @@
       %>
         {
           "type": "simple_response",
-          "lang": "<%= languages[i] %>",
+          "lang": "<%- languages[i] %>",
           "platform": "google",
-          "textToSpeech": "<%= replies[j] %>"
+          "textToSpeech": "<%- replies[j] %>"
         }<% if (i < iLen - 1 || j < jLen - 1) { %>,<% } %>
       <%
           }

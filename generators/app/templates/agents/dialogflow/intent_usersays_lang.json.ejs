@@ -11,14 +11,14 @@
         <%
           if (query.messages[language][i].fragments[j].is_param) {
         %>
-        "text": "<%= query.messages[language][i].fragments[j].text %>",
-        "alias": "<%= query.messages[language][i].fragments[j].text %>",
+        "text": "<%- query.messages[language][i].fragments[j].text %>",
+        "alias": "<%- query.messages[language][i].fragments[j].text %>",
         "meta": "@<%= query.messages[language][i].fragments[j].text %>",
         "userDefined": true
         <%
           } else {
         %>
-        "text": "<%= query.messages[language][i].fragments[j].text %>",
+        "text": "<%- query.messages[language][i].fragments[j].text %>",
         "userDefined": false
         <%
           }

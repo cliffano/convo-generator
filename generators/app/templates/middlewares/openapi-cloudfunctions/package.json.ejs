@@ -1,16 +1,16 @@
 {
-  "name": "<%= config.id() %>",
-  "version": "<%= config.convoSpec.info.version %>",
-  "description": "<%= config.convoSpec.info.description %>",
+  "name": "<%- config.id() %>",
+  "version": "<%- config.convoSpec.info.version %>",
+  "description": "<%- config.convoSpec.info.description %>",
   "main": "index.js",
-  "author": "<%= config.convoSpec.info.contact.name %> <<%= config.convoSpec.info.contact.email %>> (<%= config.convoSpec.info.contact.url %>)",
-  "license": "<%= config.convoSpec.info.license.name %>",
+  "author": "<%- config.convoSpec.info.contact.name %> <<%= config.convoSpec.info.contact.email %>> (<%= config.convoSpec.info.contact.url %>)",
+  "license": "<%- config.convoSpec.info.license.name %>",
   "dependencies": {
     <%
       const dependencies = config.convoSpec.middlewares.openapi_cloudfunctions.dependencies;
       for (let i = 0, len = dependencies.length; i < len; i++) {
     %>
-    "<%= dependencies[i].name %>": "<%= dependencies[i].version %>",
+    "<%- dependencies[i].name %>": "<%- dependencies[i].version %>",
     <%
       }
     %>
