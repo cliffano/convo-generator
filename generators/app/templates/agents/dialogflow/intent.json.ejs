@@ -33,7 +33,17 @@
         {
           "type": 0,
           "lang": "<%- languages[i] %>",
-          "speech": []
+          "speech": [
+          <%
+            const replies = query.replies[languages[i]];
+            for (let l = 0, lLen = replies.length; l < lLen; l++) {
+          %>
+            "<%- replies[l] %>"
+          <% if (l < lLen - 1 || l < lLen - 1) { %>,<% } %>
+          <%
+            }
+          %>
+          ]
         }
       ],
       "defaultResponsePlatforms": {},

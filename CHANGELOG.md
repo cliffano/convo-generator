@@ -3,6 +3,7 @@
 * Retrieve Dialogflow supported languages from Convo specification #2
 * Remove character escaping for JSON property values #1
 * Fix Dialogflow generating only the last parameter entries language file
+* Add support for query replies pre-defined in Convo specification
 
 ### 0.0.1
 * Initial version
