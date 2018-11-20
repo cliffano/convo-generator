@@ -20,6 +20,7 @@
     "isDeviceAgent": false
   },
   "defaultTimezone": "<%- config.convoSpec.info.timezone %>",
+  <% if (config.env.cloudfunctions) { %>
   "webhook": {
     "url": "<%- config.env.cloudfunctions.url %>",
     "headers": {
@@ -31,6 +32,7 @@
     "cloudFunctionsEnabled": false,
     "cloudFunctionsInitialized": false
   },
+  <% } %>
   "isPrivate": true,
   "customClassifierMode": "use.after",
   "mlMinConfidence": 0.3,
