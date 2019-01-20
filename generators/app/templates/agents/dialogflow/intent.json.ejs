@@ -3,19 +3,17 @@
   "auto": true,
   "contexts": [],
   "responses": [
-    <%
-      const languages = Object.keys(query.messages);
-      for (let i = 0, iLen = languages.length; i < iLen; i++) {
-    %>
     {
       "resetContexts": false,
       "affectedContexts": [],
       "parameters": [
       <%
-        // TODO: make params unique across all messages
-        const messages = query.messages[languages[i]];
-        for (let j = 0, jLen = messages.length; j < jLen; j++) {
-          for (let k = 0, kLen = messages[j].params.length; k < kLen; k++) {
+        const languages = Object.keys(query.messages);
+        for (let i = 0, iLen = languages.length; i < iLen; i++) {
+          // TODO: make params unique across all messages
+          const messages = query.messages[languages[i]];
+          for (let j = 0, jLen = messages.length; j < jLen; j++) {
+            for (let k = 0, kLen = messages[j].params.length; k < kLen; k++) {
       %>
       {
         "required": false,
@@ -25,11 +23,15 @@
         "isList": false
       }<% if (j < jLen - 1 || k < kLen - 1) { %>,<% } %>
       <%
+            }
           }
         }
       %>
       ],
       "messages": [
+        <%
+          for (let i = 0, iLen = languages.length; i < iLen; i++) {
+        %>
         {
           "type": 0,
           "lang": "<%- languages[i] %>",
@@ -44,17 +46,20 @@
             }
           %>
           ]
-        }
+        }<% if (i < iLen - 1) { %>,<% } %>
+        <%
+          }
+        %>
       ],
       "defaultResponsePlatforms": {},
       "speech": []
-    }<% if (i < iLen - 1) { %>,<% } %>
-    <%
-      }
-    %>
+    }
   ],
   "priority": 500000,
-  "webhookUsed": true,
+  <%
+  // TODO: decide webhook usage based on middlewares?
+  %>
+  "webhookUsed": false,
   "webhookForSlotFilling": false,
   "lastUpdate": 1534984467,
   "fallbackIntent": false,

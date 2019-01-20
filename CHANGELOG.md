@@ -5,6 +5,7 @@
 * Fix Dialogflow generating only the last parameter entries language file
 * Add support for query replies pre-defined in Convo specification
 * Add support for webhook-less Dialogflow agent
+* Fix language configuration structure in Dialogflow intent
 
 ### 0.0.1
 * Initial version
