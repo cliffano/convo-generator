@@ -22,17 +22,13 @@ Please have a look at [Convo Jenkins](http://github.com/cliffano/convo-jenkins) 
 Installation
 ------------
 
-Install [Yeoman](http://yeoman.io/):
+Install [Yeoman](http://yeoman.io/), [Serverless](https://serverless.com/), [dialogflow-cli](https://www.npmjs.com/package/dialogflow-cli):
 
-    npm install -g yo
+    npm install -g yo serverless dialogflow-cli
 
-Install Convo Generator:
+Install Convo Generator itself:
 
     npm install -g convo-generator
-
-Install [Serverless](https://serverless.com/):
-
-    npm install -g serverless
 
 Configuration
 -------------
@@ -41,14 +37,14 @@ Create the following configuration files:
 
 1. [Environment configuration](https://github.com/cliffano/convo/blob/master/docs/environment-configuration.md)
 2. [Convo specification](https://github.com/cliffano/convo/blob/master/docs/convo-specification.md)
-3. [OpenAPI specification](https://github.com/cliffano/convo/blob/master/docs/openapi-specification.md)
+3. [OpenAPI specification](https://github.com/cliffano/convo/blob/master/docs/openapi-specification.md) (optional)
 
 Usage
 -----
 
 Generate OpenAPI-CloudFunctions middleware:
 
-    yo convo openapi-cloudfunctions-middleware </path/to/env.yaml> </path/to/convo-spec.yaml> </path/to/openapi-spec.yaml>
+    yo convo openapi-cloudfunctions-middleware <path/to/env.yaml> <path/to/convo-spec.yaml> <path/to/openapi-spec.yaml>
 
 Deploy the generated middleware:
 
@@ -56,9 +52,13 @@ Deploy the generated middleware:
 
 Generate DialogFlow agent:
 
-    yo convo dialogflow-agent </path/to/env.yaml> </path/to/convo-spec.yaml>
+    yo convo dialogflow-agent <path/to/env.yaml> <path/to/convo-spec.yaml>
 
-You will then need to zip up the generated agent, and then [import or restore the zip file](https://dialogflow.com/docs/agents/export-import-restore) to Dialogflow.
+Deploy the generated agent:
+
+    dialogflow-cli import --credentials <path/to/project-credentials.json> <path/to/generated-agent-dir/>
+
+Alternatively, you can zip up the generated agent, and then [import or restore the zip file](https://dialogflow.com/docs/agents/export-import-restore) to Dialogflow.
 
 Colophon
 --------

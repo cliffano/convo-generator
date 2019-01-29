@@ -18,4 +18,4 @@ test:
 install:
 	npm link
 
-.PHONY: ci clean deps lint test install
+.PHONY: ci clean deps deps-local lint test install
