@@ -17,7 +17,7 @@ This generator reads the environment configuration, Convo specification, and Ope
 * A Convo agent in the form of [Dialogflow export zip](https://dialogflow.com/docs/agents/export-import-restore) which can then be imported or restored into your Dialogflow project
 * A Convo middleware in the form of [Serverless app with CloudFunctions](https://github.com/serverless/serverless-google-cloudfunctions) which can then be deployed to your GCP project.
 
-Please have a look at [Convo Jenkins](http://github.com/cliffano/convo-jenkins) and [Convo ipify](http://github.com/cliffano/convo-ipify) as examples of how Convo Generator can be used.
+Please have a look at [Convo Jenkins](http://github.com/cliffano/convo-jenkins) and [Convo Thomas](http://github.com/cliffano/convo-thomas) as examples of how Convo Generator can be used.
 
 Installation
 ------------
@@ -69,4 +69,4 @@ Related Projects:
 * [convo-node](http://github.com/cliffano/convo-node) - node.js utility module for Convo voice framework
 * [Convo Jenkins](http://github.com/cliffano/convo-jenkins) - Convo agent and middleware for Jenkins
 * [Convo Jenkins Helper](http://github.com/cliffano/convo-jenkins-helper) - Helper node.js module for Convo Jenkins
-* [Convo ipify](http://github.com/cliffano/convo-ipify) - Convo agent and middleware for ipify
+* [Convo Thomas](http://github.com/cliffano/convo-thomas) - Convo agent for Thomas the Tank Engine Facts application
