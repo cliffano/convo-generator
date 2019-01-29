@@ -1,6 +1,6 @@
 const assert = require('assert');
 const fs = require('fs');
-const Config = require('../../../lib/agents/dialogflow/config');
+const Config = require('../../../generators/lib/agents/dialogflow/config');
 
 describe('DialogFlow Agent Config', function() {
   beforeEach(function () {

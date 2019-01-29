@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Move lib/ folder under generators/ for inclusion in Yeoman 
+
 ## [0.0.2] - 2019-01-24
 
 ### Added

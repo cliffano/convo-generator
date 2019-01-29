@@ -1,3 +1,3 @@
-const Generator = require('../../lib/generator');
+const Generator = require('../lib/generator');
 
 module.exports = Generator;

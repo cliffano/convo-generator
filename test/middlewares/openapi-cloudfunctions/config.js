@@ -1,6 +1,6 @@
 const assert = require('assert');
 const fs = require('fs');
-const Config = require('../../../lib/middlewares/openapi-cloudfunctions/config');
+const Config = require('../../../generators/lib/middlewares/openapi-cloudfunctions/config');
 
 describe('OpenAPI-CloudFunctions Middleware Config', function() {
   beforeEach(function () {
