@@ -37,7 +37,12 @@ Create the following configuration files:
 
 1. [Environment configuration](https://github.com/cliffano/convo/blob/master/docs/environment-configuration.md)
 2. [Convo specification](https://github.com/cliffano/convo/blob/master/docs/convo-specification.md)
-3. [OpenAPI specification](https://github.com/cliffano/convo/blob/master/docs/openapi-specification.md) (optional)
+
+And depending on the middleware specified in your Convo specification, you need to provide the corresponding configuration file(s):
+
+| Middleware | Configuration File |
+|------------|--------------------|
+| openapi_cloudfunctions | [OpenAPI specification](https://github.com/cliffano/convo/blob/master/docs/openapi-specification.md) |
 
 Usage
 -----
