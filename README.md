@@ -68,5 +68,4 @@ Related Projects:
 * [Convo](http://github.com/cliffano/convo) - Specification based voice and text conversation app
 * [convo-node](http://github.com/cliffano/convo-node) - node.js utility module for Convo voice framework
 * [Convo Jenkins](http://github.com/cliffano/convo-jenkins) - Convo agent and middleware for Jenkins
-* [Convo Jenkins Helper](http://github.com/cliffano/convo-jenkins-helper) - Helper node.js module for Convo Jenkins
 * [Convo Thomas](http://github.com/cliffano/convo-thomas) - Convo agent for Thomas the Tank Engine Facts application
