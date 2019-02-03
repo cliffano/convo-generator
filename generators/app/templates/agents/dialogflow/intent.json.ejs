@@ -21,7 +21,7 @@
         "name": "<%- messages[j].params[k] %>",
         "value": "$<%- messages[j].params[k] %>",
         "isList": false
-      }<% if (j < jLen - 1 || k < kLen - 1) { %>,<% } %>
+      }<% if (i < iLen - 1 || j < jLen - 1 || k < kLen - 1) { %>,<% } %>
       <%
             }
           }
@@ -41,7 +41,7 @@
             for (let l = 0, lLen = replies.length; l < lLen; l++) {
           %>
             "<%- replies[l] %>"
-          <% if (l < lLen - 1 || l < lLen - 1) { %>,<% } %>
+          <% if (l < lLen - 1) { %>,<% } %>
           <%
             }
           %>
