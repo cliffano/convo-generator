@@ -6,7 +6,7 @@ provider:
   # node 8 allows console.debug which is handy for logging payloads.
   runtime: nodejs
   project: <%= config.convoSpec.middlewares.openapi_cloudfunctions.cloudfunctions.project_id %>
-  credentials: ~/.gcloud/keyfile.json # path needs to be absolute
+  credentials: <%= config.convoSpec.middlewares.openapi_cloudfunctions.cloudfunctions.credentials %> # path needs to be absolute
 
 plugins:
   - serverless-google-cloudfunctions

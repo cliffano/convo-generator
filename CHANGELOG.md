@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Parameterise serverless.yaml template credentials config
+
 ### Fixed
 - Fix responses array syntax in DialogFlow intent template
 
