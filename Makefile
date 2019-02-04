@@ -18,4 +18,7 @@ test:
 install:
 	npm link
 
-.PHONY: ci clean deps deps-local lint test install
+publish:
+	npm publish
+
+.PHONY: ci clean deps deps-local lint test install publish

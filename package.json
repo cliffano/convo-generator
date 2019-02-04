@@ -1,6 +1,6 @@
 {
   "name": "generator-convo",
-  "version": "0.0.4",
+  "version": "0.0.5-pre",
   "description": "Convo agents and middlewares generator using Yeoman",
   "files": [
     "generators"
