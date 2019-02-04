@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Fix webhook enablement to check for any middleware instead of specific openapi-cloudfunctions #3
+
 ## [0.0.4] - 2019-02-04
 
 ### Changed
