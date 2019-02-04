@@ -57,9 +57,12 @@
   ],
   "priority": 500000,
   <%
-  // TODO: decide webhook usage based on middlewares?
+    if (config.convoSpec.middlewares.openapi_cloudfunctions) {
   %>
+  "webhookUsed": true,
+  <% } else { %>
   "webhookUsed": false,
+  <% } %>
   "webhookForSlotFilling": false,
   "lastUpdate": 1534984467,
   "fallbackIntent": false,
