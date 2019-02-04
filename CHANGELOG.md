@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Dialogflow agent enables webhook only when Convo spec contains a middleware #3
+- Upgrade middleware convo-node dependency to 0.0.3
 
 ### Added
 - Parameterise serverless.yaml template credentials config
