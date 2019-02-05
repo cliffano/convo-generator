@@ -74,4 +74,4 @@ Related Projects:
 * [convo-node](http://github.com/cliffano/convo-node) - node.js utility module for Convo voice framework
 * [Convo Thomas](http://github.com/cliffano/convo-thomas) - Convo agent for Thomas the Tank Engine Facts
 * [Convo Jenkins](http://github.com/cliffano/convo-jenkins) - Convo agent and middleware for Jenkins
-* [Convo Jenkins](http://github.com/cliffano/convo-hacker-news) - Convo agent and middleware for Hacker News
+* [Convo Hacker News](http://github.com/cliffano/convo-hacker-news) - Convo agent and middleware for Hacker News
