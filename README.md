@@ -47,9 +47,11 @@ And depending on the middleware type specified in your Convo specification, you 
 Usage
 -----
 
+### DialogFlow agent
+
 Generate DialogFlow agent:
 
-    yo convo dialogflow-agent <path/to/env.yaml> <path/to/convo-spec.yaml>
+    yo convo dialogflow-agent <path/to/env-config.yaml> <path/to/convo-spec.yaml>
 
 Deploy the generated agent:
 
@@ -57,13 +59,21 @@ Deploy the generated agent:
 
 Alternatively, you can zip up the generated agent, and then [import or restore the zip file](https://dialogflow.com/docs/agents/export-import-restore) to Dialogflow.
 
-Generate FreeStyle-CloudFunctions middleware:
+### Freestyle-CloudFunctions middleware:
 
-    yo convo freestyle-cloudfunctions-middleware <path/to/env.yaml> <path/to/convo-spec.yaml>
+Generate Freestyle-CloudFunctions middleware:
 
-Or generate OpenAPI-CloudFunctions middleware:
+    yo convo freestyle-cloudfunctions-middleware <path/to/env-config.yaml> <path/to/convo-spec.yaml>
 
-    yo convo openapi-cloudfunctions-middleware <path/to/env.yaml> <path/to/convo-spec.yaml> <path/to/openapi-spec.yaml>
+Deploy the generated middleware:
+
+    serverless deploy
+    
+### OpenAPI-CloudFunctions middleware:
+
+Generate OpenAPI-CloudFunctions middleware:
+
+    yo convo openapi-cloudfunctions-middleware <path/to/env-config.yaml> <path/to/convo-spec.yaml> <path/to/openapi-spec.yaml>
 
 Deploy the generated middleware:
 
