@@ -17,7 +17,7 @@ This generator reads the environment configuration, Convo specification, and Ope
 * A Convo agent in the form of [Dialogflow export zip](https://dialogflow.com/docs/agents/export-import-restore) which can then be imported or restored into your Dialogflow project
 * A Convo middleware in the form of [Serverless app with CloudFunctions](https://github.com/serverless/serverless-google-cloudfunctions) which can then be deployed to your GCP project.
 
-Please have a look at [Convo Jenkins](http://github.com/cliffano/convo-jenkins) and [Convo Thomas](http://github.com/cliffano/convo-thomas) as examples of how Convo Generator can be used.
+Please have a look at [Convo Thomas](http://github.com/cliffano/convo-thomas), [Convo Hacker News](http://github.com/cliffano/convo-hacker-news), and [Convo Jenkins](http://github.com/cliffano/convo-jenkins) as examples of how Convo Generator can be used.
 
 Installation
 ------------
@@ -33,27 +33,19 @@ Install Convo Generator itself:
 Configuration
 -------------
 
-Create the following configuration files:
+Create the following mandatory configuration files:
 
-1. [Environment configuration](https://github.com/cliffano/convo/blob/master/docs/environment-configuration.md)
-2. [Convo specification](https://github.com/cliffano/convo/blob/master/docs/convo-specification.md)
+* [Environment configuration](https://github.com/cliffano/convo/blob/master/docs/conf-environment.md)
+* [Convo specification](https://github.com/cliffano/convo/blob/master/docs/conf-convo-specification.md)
 
-And depending on the middleware specified in your Convo specification, you need to provide the corresponding configuration file(s):
+And depending on the middleware type specified in your Convo specification, you need to provide these additional configuration files:
 
-| Middleware | Configuration File |
-|------------|--------------------|
-| openapi_cloudfunctions | [OpenAPI specification](https://github.com/cliffano/convo/blob/master/docs/openapi-specification.md) |
+| Middleware Type | Configuration File |
+|-----------------|--------------------|
+| OpenAPI-CloudFunctions | [OpenAPI specification](https://github.com/cliffano/convo/blob/master/docs/conf-openapi-specification.md) |
 
 Usage
 -----
-
-Generate OpenAPI-CloudFunctions middleware:
-
-    yo convo openapi-cloudfunctions-middleware <path/to/env.yaml> <path/to/convo-spec.yaml> <path/to/openapi-spec.yaml>
-
-Deploy the generated middleware:
-
-    serverless deploy
 
 Generate DialogFlow agent:
 
@@ -65,13 +57,25 @@ Deploy the generated agent:
 
 Alternatively, you can zip up the generated agent, and then [import or restore the zip file](https://dialogflow.com/docs/agents/export-import-restore) to Dialogflow.
 
+Generate FreeStyle-CloudFunctions middleware:
+
+    yo convo freestyle-cloudfunctions-middleware <path/to/env.yaml> <path/to/convo-spec.yaml> <path/to/openapi-spec.yaml>
+
+Generate OpenAPI-CloudFunctions middleware:
+
+    yo convo openapi-cloudfunctions-middleware <path/to/env.yaml> <path/to/convo-spec.yaml> <path/to/openapi-spec.yaml>
+
+Deploy the generated middleware:
+
+    serverless deploy
+
 Colophon
 --------
 
 Related Projects:
 
 * [Convo](http://github.com/cliffano/convo) - Specification-based voice and text conversation library
-* [convo-node](http://github.com/cliffano/convo-node) - node.js utility module for Convo voice framework
+* [convo-node](http://github.com/cliffano/convo-node) - node.js utility module for Convo library
 * [Convo Thomas](http://github.com/cliffano/convo-thomas) - Convo agent for Thomas the Tank Engine Facts
-* [Convo Jenkins](http://github.com/cliffano/convo-jenkins) - Convo agent and middleware for Jenkins
 * [Convo Hacker News](http://github.com/cliffano/convo-hacker-news) - Convo agent and middleware for Hacker News
+* [Convo Jenkins](http://github.com/cliffano/convo-jenkins) - Convo agent and middleware for Jenkins
