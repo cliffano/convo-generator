@@ -59,9 +59,9 @@ Alternatively, you can zip up the generated agent, and then [import or restore t
 
 Generate FreeStyle-CloudFunctions middleware:
 
-    yo convo freestyle-cloudfunctions-middleware <path/to/env.yaml> <path/to/convo-spec.yaml> <path/to/openapi-spec.yaml>
+    yo convo freestyle-cloudfunctions-middleware <path/to/env.yaml> <path/to/convo-spec.yaml>
 
-Generate OpenAPI-CloudFunctions middleware:
+Or generate OpenAPI-CloudFunctions middleware:
 
     yo convo openapi-cloudfunctions-middleware <path/to/env.yaml> <path/to/convo-spec.yaml> <path/to/openapi-spec.yaml>
 
