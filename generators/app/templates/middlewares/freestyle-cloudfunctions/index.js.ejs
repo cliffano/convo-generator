@@ -1,0 +1,141 @@
+<%
+/******************************************************************
+ * This template uses JavaScript (Yeoman Generator) to generate JavaScript (Serverless CloudFunctions) - yep, sorry!
+ * To slightly improve readability, all variables for generator code which are declared in this template are prefixed with double underscores.
+ ******************************************************************/
+%>
+'use strict';
+
+const convo = require('convo-node');
+let textRenderer = new convo.TextRenderer();
+<%
+  /******************************************************************
+   * Declare Convo Helper if one is supplied in Convo specification.
+   ******************************************************************/
+  if (config.convoSpec.middlewares.freestyle_cloudfunctions.freestyle.node_modules.helper) {
+%>
+const <%= config.id() %>Helper = require('<%= config.convoSpec.middlewares.freestyle_cloudfunctions.freestyle.node_modules.helper %>');
+<% } %>
+
+function handleRequest(agent, request, response) {
+
+  // Create a callback for handling error.
+  // This callback logs an error message and then responds with a reply payload containing the error message.
+  function createErrorCallback(done) {
+    return function(replyText) {
+      replyText = textRenderer.renderText(replyText);
+      console.error('Sending reply with error message: ' + replyText);
+      const replyPayload = agent.payload.createReply(replyText);
+      done(null, replyPayload);
+    };
+  }
+
+  // Create a callback for handling operation call result.
+  // The callback signature with error, data, and response is defined by Convo freestyle.
+  function createOperationCallback(replyText, done) {
+    return function(err, data, _response) {
+      console.log('Payload from operation service: ', data);
+      console.log('With response headers: ', _response.headers);
+      textRenderer.addParams({ data: data, headers: _response.headers });
+      if (err) {
+        createErrorCallback(done)(err.message);
+      } else {
+        replyText = textRenderer.renderText(replyText);
+        console.info('Sending reply with success message: ' + replyText);
+        const replyPayload = agent.payload.createReply(replyText);
+        done(null, replyPayload);
+      }
+    };
+  }
+
+  // Call operation method using a Convo Helper if it has the function defined in operation_id
+  function callOperation(operation, method, params, replyText, opts, done) {
+    const operationCb = createOperationCallback(replyText, done);
+    let args = [];
+    <% if (config.convoSpec.middlewares.freestyle_cloudfunctions.freestyle.node_modules.helper) { %>
+      if (<%= config.id() %>Helper.textHelpers) {
+        textRenderer.addParams(<%= config.id() %>Helper.textHelpers);
+      }
+      if (<%= config.id() %>Helper[operation]) {
+        let errorCb = createErrorCallback(done);
+        console.info('Using Convo Helper: %s', <%= config.id() %>Helper.getInfo());
+        <%= config.id() %>Helper[operation](params, operationCb, errorCb, opts);
+      } else {
+        args.push(operationCb);
+        operation[method](...args);
+      }
+    <% } else { %>
+      args.push(operationCb);
+      operation[method](...args);
+    <% } %>
+  }
+
+  // Callback for handling HTTP request.
+  // It receives the payload from Convo Agent, the payload details will then be matched to the queries
+  // defined in Convo specification. An API call will then be made to the OpenAPI service, which response
+  // will then be used to construct the reply back to the Agent.
+  function httpCallback(done) {
+
+    if (request.headers['convo-token'] !== '<%= config.env.convo.token %>') {
+      createErrorCallback(done)('Invalid Convo token: ' + request.headers['convo-token']);
+    } else {
+
+      const queryName = agent.payload.getQueryName(request.body);
+      const queryLanguage = agent.payload.getQueryLanguage(request.body);
+      const queryParams = agent.payload.getQueryParams(request.body);
+
+      console.info('Receiving query: %s, using language: %s', queryName, queryLanguage);
+      console.log('Payload from agent: ', request.body);
+
+      textRenderer.addParams(queryParams);
+
+      let convoOpts = {
+        queryName: queryName,
+        queryLanguage: queryLanguage
+      };
+
+      switch (queryName) {
+      <%
+        /******************************************************************
+         * Match payload to the queries defined in Convo specification
+         * based on query name and language.
+         ******************************************************************/
+        const __queries = config.queries().queries;
+        for (let i = 0, iLen = __queries.length; i < iLen; i++) {
+      %>
+        case '<%= __queries[i].name %>':
+          switch (queryLanguage) {
+          <%
+            const __languages = Object.keys(__queries[i].replies);
+            for (let j = 0, jLen = __languages.length; j < jLen; j++) {
+              const numOfReplies = __queries[i].replies[__languages[j]].length;
+              const randomReply = __queries[i].replies[__languages[j]][Math.floor(Math.random() * numOfReplies)];
+          %>
+            case '<%= __languages[j] %>':
+              console.info('Calling operation: %s, with method: %s', '<%= __queries[i].api %>', '<%= __queries[i].method %>');
+              callOperation(<%= __queries[i].api %>, '<%= __queries[i].method %>', queryParams, '<%= randomReply %>', convoOpts, done);
+              break;
+          <%
+            }
+          %>
+            default:
+              createErrorCallback(done)('Unsupported reply language: ' + queryLanguage);
+          }
+          break;
+      <%
+        }
+      %>
+        default:
+          createErrorCallback(done)('Unsupported query: ' + queryName);
+      }
+    }
+  }
+
+  agent.http.handleRequest(request, response, httpCallback);
+}
+
+// Declare all Convo Agent-specific endpoint(s) here.
+// Agent payload and http processing methods should be implemented in convo-node.
+exports.dialogflow = (request, response) => {
+  handleRequest(convo.dialogFlow, request, response);
+};

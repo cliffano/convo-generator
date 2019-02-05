@@ -2,6 +2,7 @@ const fs = require('fs');
 const YeomanGenerator = require('yeoman-generator');
 
 const dialogFlowAgent = require('./agents/dialogflow/generator');
+const freestyleCloudFunctionsMiddleware = require('./middlewares/freestyle-cloudfunctions/generator');
 const openApiCloudFunctionsMiddleware = require('./middlewares/openapi-cloudfunctions/generator');
 
 class ConvoGenerator extends YeomanGenerator {
@@ -24,6 +25,9 @@ class ConvoGenerator extends YeomanGenerator {
         break;
       case 'openapi-cloudfunctions-middleware':
         self.generator = openApiCloudFunctionsMiddleware;
+        break;
+      case 'freestyle-cloudfunctions-middleware':
+        self.generator = freestyleCloudFunctionsMiddleware;
         break;
       default:
         console.error('Unsupported generator type: %s', generatorType);
