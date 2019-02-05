@@ -4,16 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.0.5] - 2019-02-06
 
 ### Added
-- Add FreeStyle-CloudFunctions middleware type
+- Add Freestyle-CloudFunctions middleware type
 
 ### Changed
 - ID is now variable name friendly
 
 ### Fixed
-- Fix webhook enablement to check for any middleware instead of specific openapi-cloudfunctions #3
+- Fix webhook enablement to check for any middleware instead of specific OpenApi-CloudFunctions type #3
 
 ## [0.0.4] - 2019-02-04
 
