@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- ID is now variable name friendly
+
 ### Fixed
 - Fix webhook enablement to check for any middleware instead of specific openapi-cloudfunctions #3
 

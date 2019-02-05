@@ -30,7 +30,7 @@ class OpenApiCloudFunctionsConfig {
    * @return {String} the ID
    */
   id() {
-    return voca.slugify(this.convoSpec.info.title);
+    return voca.slugify(this.convoSpec.info.title).replace('-', '');
   }
 
   apis() {
